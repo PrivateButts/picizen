@@ -61,7 +61,9 @@ ROOT_URLCONF = 'picizen.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'picizen' / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,9 +121,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = env.str('STATIC_URL', default='/static/')
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / env.str('STATIC_ROOT', default='staticfiles')
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# Media files
+MEDIA_URL = env.str('MEDIA_URL', default='/media/')
+MEDIA_ROOT = BASE_DIR / env.str('MEDIA_ROOT', default='mediafiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Vite settings
+DJANGO_VITE_ASSETS_PATH = BASE_DIR / 'webui' / 'dist'
+DJANGO_VITE_DEV_MODE = DEBUG
+STATICFILES_DIRS.append(DJANGO_VITE_ASSETS_PATH)

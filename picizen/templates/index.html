@@ -1,0 +1,11 @@
+{% load django_vite %}
+<html>
+    <head>
+        <title>picizen</title>
+        {% vite_hmr_client %}
+        {% vite_asset 'src/main.ts' %}
+    </head>
+    <body>
+        <div id="app"></div>
+    </body>
+</html>
