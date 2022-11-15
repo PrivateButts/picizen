@@ -1,5 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import * as path from 'path';
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,6 +15,18 @@ export default defineConfig({
     manifest: true,
     rollupOptions: {
       input: './src/main.ts',
+    }
+  },
+  resolve: {
+    alias: {
+      '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
+    }
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        quietDeps: true,
+      }
     }
   }
 })
