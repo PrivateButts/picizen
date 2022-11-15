@@ -8,6 +8,9 @@ django = "*"
 pillow = "*"
 django-vite = "*"
 django-environ = "*"
+strawberry-graphql = "*"
+strawberry-graphql-django = "*"
+blurhash-python = "*"
 
 [dev-packages]
 

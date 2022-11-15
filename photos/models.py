@@ -2,6 +2,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from picizen.helpers import BaseModel
+from PIL import Image
+import blurhash
 
 USER = get_user_model()
 
@@ -9,8 +11,13 @@ USER = get_user_model()
 class Photo(BaseModel):
     title = models.CharField(max_length=255)
     image = models.ImageField(upload_to='photos')
+    blurhash = models.CharField(max_length=255, blank=True, null=True)
 
     creator = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.blurhash = blurhash.encode(self.image, x_components=4, y_components=3)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
