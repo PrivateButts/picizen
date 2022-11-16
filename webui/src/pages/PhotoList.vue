@@ -1,8 +1,10 @@
 <template>
     <h1>Photo List</h1>
-    <ul>
-        <PhotoCard v-for="photo in photos" :image="photo">{{ photo.title }}</PhotoCard>
-    </ul>
+    <div class="row g-2">
+        <div class="col-4" v-for="photo in photos">
+            <PhotoCard :image="photo">{{ photo.title }}</PhotoCard>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">

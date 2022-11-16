@@ -5,7 +5,7 @@
             :height="props.image.height"
             :hash="props.image.blurhash"
             :src="props.image.url"
-            :alt="props.image.title"
+            :imgAlt="props.image.title"
             :style="{'aspect-ratio': props.image.width/props.image.height}"
         />
     </div>
@@ -28,7 +28,7 @@ const props = defineProps<{
 </script>
 
 <style scoped>
-    .photocard{
+    /* .photocard{
         width: 18rem;
-    }
+    } */
 </style>

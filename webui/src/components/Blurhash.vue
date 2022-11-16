@@ -1,6 +1,8 @@
 <template>
-    <div class="position-relative w-100 h-100" :style="`padding-bottom: ${aspectRatio * 100}%`">
-        <canvas ref="canvas" class="position-absolute top-0 start-0 end-0 bottom-0 w-100 h-100" width="32" height="32" />
+    <div>
+        <div class="position-relative w-100 h-100" :style="`padding-bottom: ${aspectRatio * 100}%`">
+            <canvas ref="canvas" class="position-absolute top-0 start-0 end-0 bottom-0 w-100 h-100" width="32" height="32" />
+        </div>
     </div>
 </template>
 

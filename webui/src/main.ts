@@ -8,33 +8,43 @@ import App from './App.vue'
 
 import router from './router'
 
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core'
+import { ApolloClient, InMemoryCache } from '@apollo/client/core'
 import { DefaultApolloClient } from '@vue/apollo-composable'
+import { createApolloProvider } from '@vue/apollo-option'
+import { createUploadLink } from 'apollo-upload-client'
+import { progressFetch } from './helpers/progress-fetch';
 
 
 // HTTP connection to the API
-const httpLink = createHttpLink({
+const uploadLink = createUploadLink({
     // You should use an absolute URL here
     uri: 'http://127.0.0.1:8000/graphql/',
+    fetch: progressFetch as any,
 })
+
 
 // Cache implementation
 const cache = new InMemoryCache()
 
 // Create the apollo client
 const apolloClient = new ApolloClient({
-    link: httpLink,
+    link: uploadLink,
     cache,
 })
 
+const apolloProvider = createApolloProvider({
+    defaultClient: apolloClient,
+})
+
 const app = createApp({
-    setup () {
-      provide(DefaultApolloClient, apolloClient)
+    setup() {
+        provide(DefaultApolloClient, apolloClient)
     },
-  
+
     render: () => h(App),
 })
 
 app.use(router)
+app.use(apolloProvider)
 
 app.mount('#app')

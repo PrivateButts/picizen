@@ -3,12 +3,12 @@
         <div class="relative w-100 h-100">
             <!-- Show the placeholder as background -->
             <blurhash-img :hash="hash" :aspect-ratio="height / width"
-                class="position-absolute top-0 start-0 transition-opacity duration-500"
+                class="position-absolute top-0 transition-opacity duration-500 w-100 h-100"
                 :class="isLoaded ? 'opacity-0' : 'opacity-100'" />
 
             <!-- Show the real image on the top and fade in after loading -->
-            <img ref="image" :width="width" :height="height"
-                class="position-absolute top-0 start-0 transition-opacity duration-500 w-100 h-100"
+            <img ref="image" :width="width" :height="height" :alt="imgAlt"
+                class="position-absolute top-0 transition-opacity duration-500 w-100 h-100 rounded"
                 :class="isLoaded ? 'opacity-100' : 'opacity-0'">
         </div>
     </div>
@@ -26,7 +26,7 @@
     }
 </style>
   
-<script>
+<script lang="ts">
 import BlurhashImg from "./Blurhash.vue";
 
 export default {
@@ -53,6 +53,10 @@ export default {
         height: {
             type: Number,
             default: 1
+        },
+        imgAlt: {
+            type: String,
+            default: ""
         }
     },
 

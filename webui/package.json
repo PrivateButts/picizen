@@ -14,6 +14,8 @@
     "@vue/apollo-components": "^4.0.0-alpha.20",
     "@vue/apollo-composable": "^4.0.0-beta.1",
     "@vue/apollo-option": "^4.0.0-alpha.20",
+    "apollo-upload-client": "^17.0.0",
+    "blurhash": "^2.0.4",
     "bootstrap": "^5.2.2",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
@@ -22,6 +24,7 @@
     "vue3-blurhash": "^1.0.1"
   },
   "devDependencies": {
+    "@types/apollo-upload-client": "^17.0.2",
     "@types/bootstrap": "^5.2.6",
     "@types/node": "^18.11.9",
     "@vitejs/plugin-vue": "^3.2.0",

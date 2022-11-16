@@ -2,7 +2,8 @@
 import strawberry
 from typing import List
 from strawberry import auto
-from typing import List
+from strawberry.file_uploads import Upload
+
 from . import models
 from accounts.gql import User as UserType
 
@@ -40,4 +41,13 @@ class Tag:
 class Query:
     photos: List[Photo] = strawberry.django.field()
 
-schema = strawberry.Schema(query=Query)
+
+@strawberry.type
+class Mutation:
+    @strawberry.mutation
+    def upload_photo(self, info, title: str, image: Upload) -> Photo:
+        photo = models.Photo.objects.create(
+            title=title,
+            image=image
+        )
+        return photo
