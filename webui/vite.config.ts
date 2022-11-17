@@ -8,6 +8,7 @@ export default defineConfig({
   plugins: [vue()],
   base: '/static/',
   server: {
+    host: '0.0.0.0',
     port: 3000,
   },
   build: {

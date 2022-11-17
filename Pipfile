@@ -11,6 +11,10 @@ django-environ = "*"
 strawberry-graphql = "*"
 strawberry-graphql-django = "*"
 blurhash-python = "*"
+huey = "*"
+redis = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 

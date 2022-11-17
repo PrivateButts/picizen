@@ -18,7 +18,7 @@ import { progressFetch } from './helpers/progress-fetch';
 // HTTP connection to the API
 const uploadLink = createUploadLink({
     // You should use an absolute URL here
-    uri: 'http://127.0.0.1:8000/graphql/',
+    uri: '/graphql/',
     fetch: progressFetch as any,
 })
 

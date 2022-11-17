@@ -1,0 +1,7 @@
+FROM node:latest
+WORKDIR /usr/src/app
+COPY ./webui/package.json .
+COPY ./webui/package-lock.json .
+RUN npm ci --production=false
+
+CMD ["npm", "run", "dev"]
