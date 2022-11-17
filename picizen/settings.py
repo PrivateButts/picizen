@@ -146,13 +146,13 @@ STATICFILES_DIRS.append(DJANGO_VITE_ASSETS_PATH)
 HUEY = {
     'results': True,  # Store return values of tasks.
     'store_none': False,  # If a task returns None, do not save to results.
-    'immediate': DEBUG,  # If DEBUG=True, run synchronously.
+    'immediate': env.bool("HUEY_IMMEDIATE", default=DEBUG),  # If DEBUG=True, run synchronously.
     'utc': True,  # Use UTC for all times internally.
     'blocking': True,  # Perform blocking pop rather than poll Redis.
     'connection': {
         # huey-specific connection parameters.
         'read_timeout': 1,  # If not polling (blocking pop), use timeout.
-        'url': env.url("REDIS_URL"),  # Allow Redis config via a DSN.
+        'url': env.str("REDIS_URL"),  # Allow Redis config via a DSN.
     },
     'consumer': {
         'workers': 1,

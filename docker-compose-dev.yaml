@@ -8,9 +8,11 @@ services:
       POSTGRES_DB: db
     volumes:
       - ./db:/var/lib/postgresql/data
+  
   redis:
-    image: redis:6
+    image: redis
     restart: unless-stopped
+  
   web:
     build:
       context: .
@@ -26,7 +28,27 @@ services:
       - .env
     environment:
       - DATABASE_URL=postgres://user:password@db:5432/db
+      - REDIS_URL=redis://redis:6379/0
+      - HUEY_IMMEDIATE=False
     command: python manage.py runserver 0.0.0.0:8000
+  
+  task-runner:
+    build:
+      context: .
+      dockerfile: docker/server
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgres://user:password@db:5432/db
+      - REDIS_URL=redis://redis:6379/0
+      - HUEY_IMMEDIATE=False
+    command: python manage.py run_huey
+  
   webui:
     build:
       context: .
@@ -35,5 +57,3 @@ services:
       - "3000:3000"
     volumes:
       - ./webui:/usr/src/app
-    
-    
