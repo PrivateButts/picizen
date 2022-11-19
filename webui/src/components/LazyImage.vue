@@ -2,7 +2,7 @@
     <div ref="wrapper" v-bind="$attrs">
         <div class="relative w-100 h-100">
             <!-- Show the placeholder as background -->
-            <blurhash-img :hash="hash" :aspect-ratio="height / width"
+            <blurhash-img :hash="hash" :aspect-ratio="height / width" v-if="hash"
                 class="position-absolute top-0 transition-opacity duration-500 w-100 h-100"
                 :class="isLoaded ? 'opacity-0' : 'opacity-100'" />
 

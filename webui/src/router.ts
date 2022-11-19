@@ -12,6 +12,11 @@ const routes = [
         component: () => import('./pages/PhotoList.vue')
     },
     {
+        path: '/photos/:id/',
+        name: 'PhotoDetail',
+        component: () => import('./pages/PhotoDetail.vue')
+    },
+    {
         path: '/albums/',
         name: 'AlbumList',
         component: () => import('./pages/AlbumList.vue')

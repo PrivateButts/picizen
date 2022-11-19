@@ -39,6 +39,7 @@ class Tag:
 
 @strawberry.type
 class Query:
+    photo: Photo = strawberry.django.field()
     photos: List[Photo] = strawberry.django.field()
 
 

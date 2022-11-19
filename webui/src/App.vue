@@ -1,43 +1,44 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">picizen</a>
-      <i class="bi bi-activity activity-animation"></i>
-    </div>
-  </nav>
-
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-1">
-        <ul class="nav flex-column text-center">
-          <li class="nav-item">
-            <router-link :to="{ name: 'Home' }" class="nav-link" active-class="active">
-              <i class="bi bi-house"></i>
-              Home
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link :to="{ name: 'PhotoList' }" class="nav-link" active-class="active">
-              <i class="bi bi-images"></i>
-              Photos
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link :to="{ name: 'AlbumList' }" class="nav-link" active-class="active">
-              <i class="bi bi-journal-album"></i>
-              Albums
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link :to="{ name: 'Upload' }" class="nav-link" active-class="active">
-              <i class="bi bi-upload"></i>
-              Upload
-            </router-link>
-          </li>
-        </ul>
+  <div class="d-flex flex-column vh-100">
+    <nav class="navbar navbar-expand-lg bg-light border-bottom">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">picizen</a>
+        <i class="bi bi-activity activity-animation"></i>
       </div>
-      <div class="col">
-        <router-view></router-view>
+    </nav>
+    <div class="container-fluid px-0 flex-grow-1">
+      <div class="d-flex h-100">
+        <div class="flex-shrink-1 border-end">
+          <ul class="nav nav-pills nav-fill flex-column mb-auto text-center">
+            <li class="nav-item">
+              <router-link :to="{ name: 'Home' }" class="nav-link py-3 border-bottom" active-class="active">
+                <i class="bi bi-house"></i>
+                <div>Home</div>
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'PhotoList' }" class="nav-link py-3 border-bottom" active-class="active">
+                <i class="bi bi-images"></i>
+                <div>Photos</div>
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'AlbumList' }" class="nav-link py-3 border-bottom" active-class="active">
+                <i class="bi bi-journal-album"></i>
+                <div>Albums</div>
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'Upload' }" class="nav-link py-3 border-bottom" active-class="active">
+                <i class="bi bi-upload"></i>
+                <div>Upload</div>
+              </router-link>
+            </li>
+          </ul>
+        </div>
+        <div class="flex-grow-1 pt-2">
+          <router-view></router-view>
+        </div>
       </div>
     </div>
   </div>
@@ -47,6 +48,10 @@
 </script>
 
 <style scoped>
+.nav-link {
+  border-radius: 0px;
+}
+
 .activity-animation {
   font-size: 1.5rem;
   background: linear-gradient(

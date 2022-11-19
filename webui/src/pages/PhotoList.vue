@@ -1,8 +1,9 @@
 <template>
-    <h1>Photo List</h1>
-    <div class="row g-2">
-        <div class="col-4" v-for="photo in photos">
-            <PhotoCard :image="photo">{{ photo.title }}</PhotoCard>
+    <div class="container">
+        <div class="row row-cols-2 row-cols-md-4 g-2">
+            <div class="col" v-for="photo in photos">
+                <PhotoCard :image="photo" @click="$router.push(`/photos/${photo.id}/`)">{{ photo.title }}</PhotoCard>
+            </div>
         </div>
     </div>
 </template>
@@ -31,6 +32,7 @@ let photos = computed(() => {
     let gqlPhotos = result.value?.photos ?? []
     return gqlPhotos.map(p => {
         return {
+            id: p.id,
             title: p.title,
             url: p.image.url,
             blurhash: p.blurhash,

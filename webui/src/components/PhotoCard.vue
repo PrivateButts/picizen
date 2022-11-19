@@ -13,18 +13,12 @@
 
 <script setup lang="ts">
 import LazyImage from "./LazyImage.vue"
-
-interface ImageType {
-    url: string
-    title: string
-    blurhash: string
-    width: number
-    height: number
-}
+import ImageType from "../types/ImageType"
 
 const props = defineProps<{
     image: ImageType
 }>()
+
 </script>
 
 <style scoped>
