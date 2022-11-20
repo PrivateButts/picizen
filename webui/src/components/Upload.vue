@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import gql from 'graphql-tag'
+import { graphql } from '../gql'
 import { start } from 'repl'
 
 export default {
@@ -39,19 +39,19 @@ export default {
             this.$data.uploadQueue.push(...Array.from(files))
             if(startUpload){
                 this.$data.uploading = true
-                this.upload(this.$data.uploadQueue.shift())
+                this.upload(this.$data.uploadQueue.shift()!)
             }
         },
         upload(file: File){
             this.$data.currentFileProgress = 0
             this.$apollo.mutate({
-                mutation: gql`
-                    mutation ($title: String!, $file: Upload!){
+                mutation: graphql(`
+                    mutation uploadPhoto($title: String!, $file: Upload!){
                         uploadPhoto(title: $title, image: $file){
                             id
                         }
                     }
-                `,
+                `),
                 variables: {
                     title: file.name,
                     file: file
@@ -66,7 +66,7 @@ export default {
                 }
             }).then((data) => {
                 if(this.$data.uploadQueue.length > 0){
-                    this.upload(this.$data.uploadQueue.shift())
+                    this.upload(this.$data.uploadQueue.shift()!)
                 }else{
                     this.$data.uploading = false
                 }

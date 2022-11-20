@@ -1,7 +1,7 @@
 # schema.py
 import strawberry
 from typing import List
-from strawberry import auto
+from strawberry import auto, ID
 from strawberry.file_uploads import Upload
 
 from . import models
@@ -10,7 +10,7 @@ from accounts.gql import User as UserType
 
 @strawberry.django.type(models.Photo)
 class Photo:
-    id: auto
+    id: ID
     title: auto
     image: auto
     blurhash: auto
@@ -20,7 +20,7 @@ class Photo:
 
 @strawberry.django.type(models.Album)
 class Album:
-    id: auto
+    id: ID
     title: auto
     description: auto
     creator: UserType
@@ -29,7 +29,7 @@ class Album:
 
 @strawberry.django.type(models.Tag)
 class Tag:
-    id: auto
+    id: ID
     name: auto
     type: auto
     photos: List[Photo]
@@ -51,4 +51,11 @@ class Mutation:
             title=title,
             image=image
         )
+        return photo
+    
+    @strawberry.mutation
+    def update_photo(self, info, id: ID, title: str) -> Photo:
+        photo = models.Photo.objects.get(id=id)
+        photo.title = title
+        photo.save()
         return photo

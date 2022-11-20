@@ -1,8 +1,8 @@
 <template>
     <div class="container">
-        <div class="row row-cols-2 row-cols-md-4 g-2">
+        <div class="row row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-2">
             <div class="col" v-for="photo in photos">
-                <PhotoCard :image="photo" @click="$router.push(`/photos/${photo.id}/`)">{{ photo.title }}</PhotoCard>
+                <PhotoCard :photo="photo" @click="$router.push(`/photos/${photo.id}/`)">{{ photo.title }}</PhotoCard>
             </div>
         </div>
     </div>
@@ -10,12 +10,12 @@
 
 <script setup lang="ts">
 import { useQuery } from '@vue/apollo-composable'
-import gql from 'graphql-tag'
+import { graphql } from '../gql'
 import { computed } from '@vue/reactivity';
 import PhotoCard from '../components/PhotoCard.vue';
 
-const { result, loading, error } = useQuery(gql`
-    query {
+const { result, loading, error } = useQuery(graphql(`
+    query getAllPhotos{
         photos {
             id
             title
@@ -27,19 +27,9 @@ const { result, loading, error } = useQuery(gql`
             }
         }
     }
-`)
+`))
 let photos = computed(() => {
-    let gqlPhotos = result.value?.photos ?? []
-    return gqlPhotos.map(p => {
-        return {
-            id: p.id,
-            title: p.title,
-            url: p.image.url,
-            blurhash: p.blurhash,
-            width: p.image.width,
-            height: p.image.height,
-        }
-    })
+    return result.value?.photos ?? []
 })
 </script>
 
