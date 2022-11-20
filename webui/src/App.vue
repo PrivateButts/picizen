@@ -60,10 +60,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.nav-link text-reset {
-  border-radius: 0px;
+.active {
+  color: white !important;
+  border-radius: 0;
 }
-
 .activity-animation {
   font-size: 1.5rem;
   background: linear-gradient(90deg,
