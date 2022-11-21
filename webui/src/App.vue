@@ -12,7 +12,7 @@
     </nav>
     <div class="container-fluid px-0 flex-grow-1">
       <div class="d-flex h-100">
-        <div class="collapse collapse-horizontal flex-shrink-1 border-end" id="sidebar">
+        <div class="collapse collapse-horizontal flex-shrink-1 border-end" id="sidebar" :class="{'show': defaultShowMenu}">
           <ul class="nav nav-pills nav-fill flex-column mb-auto text-center">
             <li class="nav-item">
               <router-link :to="{ name: 'Home' }" class="nav-link text-reset py-3 border-bottom" active-class="active">
@@ -48,7 +48,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { Collapse } from 'bootstrap';
 import { onMounted } from 'vue';
 
@@ -57,6 +57,9 @@ onMounted(() => {
     toggle: false
   })
 })
+
+const defaultShowMenu = window.innerWidth > 576;
+
 </script>
 
 <style scoped>

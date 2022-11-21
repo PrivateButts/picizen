@@ -40,7 +40,10 @@ class Tag:
 @strawberry.type
 class Query:
     photo: Photo = strawberry.django.field()
-    photos: List[Photo] = strawberry.django.field()
+    photos: List[Photo] = strawberry.django.field(pagination=True)
+    
+    album: Album = strawberry.django.field()
+    albums: List[Album] = strawberry.django.field(pagination=True)
 
 
 @strawberry.type

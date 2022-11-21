@@ -49,7 +49,7 @@ services:
       - HUEY_IMMEDIATE=False
     command: python manage.py run_huey
   
-  webui:
+  webui-vite:
     build:
       context: .
       dockerfile: docker/webui
@@ -57,3 +57,11 @@ services:
       - "3000:3000"
     volumes:
       - ./webui:/usr/src/app
+  
+  webui-codegen:
+    build:
+      context: .
+      dockerfile: docker/webui
+    volumes:
+      - ./webui:/usr/src/app
+    command: npm run codegen-watch
