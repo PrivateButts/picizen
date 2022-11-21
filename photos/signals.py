@@ -12,4 +12,6 @@ def photo_post_delete(sender, instance, **kwargs):
 @receiver(post_save, sender="photos.Photo")
 def photo_post_save(sender, instance, created, **kwargs):
     if created:
+        if instance.creator:
+            instance.creator.has_perm('photos.view_photo', instance)
         process_new_photo(instance)

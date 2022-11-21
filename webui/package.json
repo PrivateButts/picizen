@@ -23,6 +23,7 @@
     "bootstrap": "^5.2.2",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
+    "pinia": "^2.0.24",
     "vue": "^3.2.41",
     "vue-router": "^4.1.6",
     "vue3-blurhash": "^1.0.1"

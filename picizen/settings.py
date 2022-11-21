@@ -43,6 +43,8 @@ INSTALLED_APPS = [
 
     'django_vite',
     'huey.contrib.djhuey',
+    'guardian',
+    'django_sendfile',
 
     'photos',
 ]
@@ -166,3 +168,10 @@ HUEY = {
         'health_check_interval': 1,  # Check worker health every second.
     },
 }
+
+
+# Django guardian settings
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # this is default
+    'guardian.backends.ObjectPermissionBackend',
+)

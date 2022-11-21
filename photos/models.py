@@ -13,10 +13,6 @@ class Photo(BaseModel):
 
     creator = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, blank=True)
 
-    def save(self, *args, **kwargs):
-        
-        super().save(*args, **kwargs)
-
     def __str__(self):
         return self.title
 

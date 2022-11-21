@@ -14,6 +14,8 @@ import { createApolloProvider } from '@vue/apollo-option'
 import { createUploadLink } from 'apollo-upload-client'
 import { progressFetch } from './helpers/progress-fetch';
 
+import { createPinia } from 'pinia'
+
 
 // HTTP connection to the API
 const uploadLink = createUploadLink({
@@ -36,6 +38,8 @@ const apolloProvider = createApolloProvider({
     defaultClient: apolloClient,
 })
 
+const pinia = createPinia()
+
 const app = createApp({
     setup() {
         provide(DefaultApolloClient, apolloClient)
@@ -45,6 +49,7 @@ const app = createApp({
 })
 
 app.use(router)
+app.use(pinia)
 app.use(apolloProvider)
 
 app.mount('#app')

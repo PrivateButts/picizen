@@ -52,7 +52,8 @@ class Mutation:
     def upload_photo(self, info, title: str, image: Upload) -> Photo:
         photo = models.Photo.objects.create(
             title=title,
-            image=image
+            image=image,
+            creator=info.context.user
         )
         return photo
     
