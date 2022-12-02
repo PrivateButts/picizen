@@ -13,6 +13,7 @@ import { useQuery } from '@vue/apollo-composable'
 import { graphql } from '../gql'
 import { computed } from '@vue/reactivity';
 import PhotoCard from '../components/PhotoCard.vue';
+import { Photo } from '../gql/graphql';
 
 const { result, loading, error } = useQuery(graphql(`
     query getAllPhotos{
@@ -25,11 +26,13 @@ const { result, loading, error } = useQuery(graphql(`
                 width
                 height
             }
+            createdAt
+            updatedAt
         }
     }
 `))
 let photos = computed(() => {
-    return result.value?.photos ?? []
+    return result.value?.photos as [Photo] ?? []
 })
 </script>
 

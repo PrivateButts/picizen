@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from './stores/user'
+
 
 const routes = [
     {
@@ -26,12 +28,33 @@ const routes = [
         name: 'Upload',
         component: () => import('./components/Upload.vue')
     },
+    {
+        path: '/login/',
+        name: 'Login',
+        component: () => import('./pages/Login.vue')
+    },
 ]
 
 
 const router = createRouter({
     history: createWebHistory(),
     routes
+})
+
+router.beforeEach(async (to, from) => {
+    if(to.name === 'Login'){
+        return true
+    }
+
+    const userStore = useUserStore()
+    if(!userStore.loaded){
+        console.log('checking user status')
+        await userStore.checkUserStatus()
+    }
+    if(!userStore.isAuthenticated){
+        return { name: 'Login' }
+    }
+    return true
 })
 
 export default router

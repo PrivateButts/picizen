@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column vh-100">
+  <div class="d-flex flex-column vh-100 overflow-hidden">
     <nav class="navbar navbar-expand-lg bg-light border-bottom">
       <div class="container-fluid">
         <router-link :to="{ name: 'Home' }" class="navbar-brand">picizen</router-link>
@@ -10,10 +10,10 @@
         </button>
       </div>
     </nav>
-    <div class="container-fluid px-0 flex-grow-1">
-      <div class="d-flex h-100">
+    <div class="container-fluid px-0 flex-grow-1 overflow-hidden">
+      <div class="d-flex h-100 overflow-hidden">
         <div class="collapse collapse-horizontal flex-shrink-1 border-end" id="sidebar" :class="{'show': defaultShowMenu}">
-          <ul class="nav nav-pills nav-fill flex-column mb-auto text-center">
+          <ul class="nav nav-pills nav-fill flex-column mb-auto text-center h-100">
             <li class="nav-item">
               <router-link :to="{ name: 'Home' }" class="nav-link text-reset py-3 border-bottom" active-class="active">
                 <i class="bi bi-house"></i>
@@ -38,9 +38,24 @@
                 <div>Upload</div>
               </router-link>
             </li>
+            <li class="flex-grow-1 border-bottom"></li>
+            <li class="nav-item">
+              <div v-if="userStore.isAuthenticated">
+                <button @click="userStore.logout()" class="nav-link text-reset py-3">
+                  <i class="bi bi-door-closed"></i>
+                  <div>Logout</div>
+                </button>
+              </div>
+              <div v-else>
+                <router-link :to="{ name: 'Login' }" class="nav-link text-reset py-3" active-class="active">
+                  <i class="bi bi-person-square"></i>
+                  <div>Login</div>
+                </router-link>
+              </div>
+            </li>
           </ul>
         </div>
-        <div class="flex-grow-1 pt-2">
+        <div class="flex-grow-1 pt-2" style="overflow-y: scroll">
           <router-view></router-view>
         </div>
       </div>
@@ -51,6 +66,9 @@
 <script setup lang="ts">
 import { Collapse } from 'bootstrap';
 import { onMounted } from 'vue';
+import { useUserStore } from './stores/user';
+
+const userStore = useUserStore();
 
 onMounted(() => {
   new Collapse('#sidebar', {
@@ -63,6 +81,10 @@ const defaultShowMenu = window.innerWidth > 576;
 </script>
 
 <style scoped>
+.nav-item {
+  flex-grow:0;
+}
+
 .active {
   color: white !important;
   border-radius: 0;

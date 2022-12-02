@@ -53,7 +53,7 @@ class Mutation:
         photo = models.Photo.objects.create(
             title=title,
             image=image,
-            creator=info.context.user
+            creator=info.context.request.user
         )
         return photo
     

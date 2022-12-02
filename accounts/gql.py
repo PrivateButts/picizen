@@ -26,6 +26,6 @@ class Query:
 
 @strawberry.type
 class Mutation:
-    login: User = auth.login()
+    login: Optional[User] = auth.login()
     logout = auth.logout()
     register: User = auth.register(UserInput)
