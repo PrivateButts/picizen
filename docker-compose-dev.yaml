@@ -17,11 +17,14 @@ services:
     build:
       context: .
       dockerfile: docker/server
+      args:
+        - build_mode=dev
     depends_on:
       - db
       - redis
     ports:
       - "8000:8000"
+      - "8001:8001"
     volumes:
       - .:/usr/src/app
     env_file:
@@ -36,9 +39,13 @@ services:
     build:
       context: .
       dockerfile: docker/server
+      args:
+        - build_mode=dev
     depends_on:
       - db
       - redis
+    ports:
+      - "8002:8001"
     volumes:
       - .:/usr/src/app
     env_file:

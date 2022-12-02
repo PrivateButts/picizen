@@ -13,6 +13,7 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  * Therefore it is highly recommended to use the babel-plugin for production.
  */
 const documents = {
+    "\n  query taskQueue{\n    taskQueue\n  }\n": types.TaskQueueDocument,
     "\n                    mutation uploadPhoto($title: String!, $file: Upload!){\n                        uploadPhoto(title: $title, image: $file){\n                            id\n                        }\n                    }\n                ": types.UploadPhotoDocument,
     "\n                query photo($id: ID!) {\n                    photo(pk: $id) {\n                        id\n                        title\n                        image {\n                            url\n                        }\n                    }\n                }\n            ": types.PhotoDocument,
     "\n                    mutation updatePhoto($id: ID!, $title: String!) {\n                        updatePhoto(id: $id, title: $title) {\n                            id\n                            title\n                        }\n                    }\n                ": types.UpdatePhotoDocument,
@@ -22,6 +23,10 @@ const documents = {
     "\n                query userQuery{\n                    me{\n                        id\n                        username\n                    }\n                }\n            ": types.UserQueryDocument,
 };
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query taskQueue{\n    taskQueue\n  }\n"): (typeof documents)["\n  query taskQueue{\n    taskQueue\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

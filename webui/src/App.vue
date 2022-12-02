@@ -3,7 +3,7 @@
     <nav class="navbar navbar-expand-lg bg-light border-bottom">
       <div class="container-fluid">
         <router-link :to="{ name: 'Home' }" class="navbar-brand">picizen</router-link>
-        <!-- <i class="bi bi-activity activity-animation"></i> -->
+        <div v-show="(taskCount > 0)" id="activity-indicator" data-bs-toggle="tooltip" data-bs-placement="bottom" :data-bs-title="activityTooltip"><i class="bi bi-activity activity-animation" ></i></div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar"
           aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -64,8 +64,10 @@
 </template>
 
 <script setup lang="ts">
-import { Collapse } from 'bootstrap';
-import { onMounted } from 'vue';
+import { useQuery } from '@vue/apollo-composable';
+import { Collapse, Tooltip } from 'bootstrap';
+import { onMounted, computed, watch } from 'vue';
+import { graphql } from './gql';
 import { useUserStore } from './stores/user';
 
 const userStore = useUserStore();
@@ -74,9 +76,31 @@ onMounted(() => {
   new Collapse('#sidebar', {
     toggle: false
   })
+  new Tooltip('#activity-indicator')
 })
 
 const defaultShowMenu = window.innerWidth > 576;
+
+const { result: taskQueue } = useQuery(graphql(`
+  query taskQueue{
+    taskQueue
+  }
+`), null, {
+  pollInterval: 1000
+});
+
+const taskCount = computed(() => taskQueue.value?.taskQueue ?? 0)
+
+const activityTooltip = computed(() => {
+  return `There are ${taskCount.value} running tasks`;
+})
+
+watch(activityTooltip, (newVal) => {
+  const tooltip = Tooltip.getInstance('#activity-indicator')
+  if (tooltip) {
+    tooltip.setContent({ '.tooltip-inner': activityTooltip.value })
+  }
+})
 
 </script>
 

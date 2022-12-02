@@ -54,7 +54,6 @@ export const uploadFetch = (url: string, options: any) =>
     });
 
 const customFetch = (uri: any, options: any) => {
-    console.log([uri, options])
     if (options.hasUpload) {
         return uploadFetch(uri, options);
     }

@@ -1,4 +1,7 @@
-FROM python:3.10-slim AS build-venv
+ARG build_mode='prod'
+
+
+FROM python:3.10-slim AS base-build
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -13,8 +16,17 @@ COPY ./Pipfile.lock ./Pipfile.lock
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir pipenv
 
+
+FROM base-build AS dev-build
+# Freeze requirements
+RUN pipenv requirements --dev > requirements.txt
+
+FROM base-build AS prod-build
 # Freeze requirements
 RUN pipenv requirements > requirements.txt
+
+
+FROM ${build_mode}-build AS build-venv
 
 # Create Virtualenv and Install
 RUN python -m venv /opt/venv

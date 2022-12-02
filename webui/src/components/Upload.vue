@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container mt-3">
         <input @change="queueUpload" type="file" multiple/>
         <div v-if="uploading">
             <span>{{uploadQueue.length + 1}} photos queued to upload</span>

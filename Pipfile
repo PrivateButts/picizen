@@ -19,6 +19,7 @@ django-sendfile2 = "*"
 django-guardian = "*"
 
 [dev-packages]
+debugpy = "*"
 
 [requires]
 python_version = "3.10"
