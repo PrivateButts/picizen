@@ -13,6 +13,15 @@ class Photo(BaseModel):
 
     creator = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, blank=True)
 
+    # photo metadata
+    date_taken = models.DateTimeField(blank=True, null=True)
+    gps_lat = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    gps_lon = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    camera_make = models.CharField(max_length=255, blank=True, null=True)
+    camera_model = models.CharField(max_length=255, blank=True, null=True)
+    lens_make = models.CharField(max_length=255, blank=True, null=True)
+    lens_model = models.CharField(max_length=255, blank=True, null=True)
+
     def __str__(self):
         return self.title
 

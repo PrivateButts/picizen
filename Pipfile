@@ -17,6 +17,7 @@ gunicorn = "*"
 psycopg2-binary = "*"
 django-sendfile2 = "*"
 django-guardian = "*"
+exifread = "*"
 
 [dev-packages]
 debugpy = "*"

@@ -1,7 +1,7 @@
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
-from .tasks import process_new_photo
+from .tasks import process_photo
 
 
 @receiver(post_delete, sender="photos.Photo")
@@ -14,4 +14,4 @@ def photo_post_save(sender, instance, created, **kwargs):
     if created:
         if instance.creator:
             instance.creator.has_perm('photos.view_photo', instance)
-        process_new_photo(instance)
+        process_photo(instance)
