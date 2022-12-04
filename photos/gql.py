@@ -18,6 +18,27 @@ class Photo:
     created_at: auto
     updated_at: auto
 
+
+@strawberry.type
+class PhotoDateGroup:
+    year_month: str
+    total_photos: int
+
+def get_photo_date_groups() -> List[PhotoDateGroup]:
+    groups = []
+    photos = models.Photo.objects.all()
+    
+    # get unknown count
+    unknownCount = photos.filter(date_taken__isnull=True).count()
+    groups.append(PhotoDateGroup(year_month='Unknown', total_photos=unknownCount))
+
+    # get known count
+    for dtRange in photos.datetimes("date_taken", kind="month"):
+        count = photos.filter(date_taken__year=dtRange.year, date_taken__month=dtRange.month).count()
+        groups.append(PhotoDateGroup(year_month=dtRange.strftime("%Y-%m"), total_photos=count))
+    return groups
+
+
 @strawberry.django.type(models.Album)
 class Album:
     id: ID
@@ -42,6 +63,8 @@ class Query:
     photo: Photo = strawberry.django.field()
     photos: List[Photo] = strawberry.django.field(pagination=True)
     
+    photoDateGroups: List[PhotoDateGroup] = strawberry.django.field(resolver=get_photo_date_groups)
+
     album: Album = strawberry.django.field()
     albums: List[Album] = strawberry.django.field(pagination=True)
 
