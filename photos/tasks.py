@@ -53,10 +53,10 @@ def extract_exif(photo):
         except ValueError as e:
             logger.warning(f'Unparsable datetime format "{tags["EXIF DateTimeOriginal"].values}" found in EXIF data for photo {photo.id}:')
     
-    photo.camera_make = _parse_tag('Image Make')
-    photo.camera_model = _parse_tag('Image Model')
-    photo.lens_make = _parse_tag('EXIF LensMake')
-    photo.lens_model = _parse_tag('EXIF LensModel')
+    photo.camera_make = _parse_tag('Image Make', tags)
+    photo.camera_model = _parse_tag('Image Model', tags)
+    photo.lens_make = _parse_tag('EXIF LensMake', tags)
+    photo.lens_model = _parse_tag('EXIF LensModel', tags)
 
     photo.save()
 

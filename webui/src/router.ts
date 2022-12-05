@@ -11,7 +11,7 @@ const routes = [
     {
         path: '/photos/',
         name: 'PhotoList',
-        component: () => import('./pages/PhotoList.vue')
+        component: () => import('./pages/PhotoDateList.vue')
     },
     {
         path: '/photos/:id/',

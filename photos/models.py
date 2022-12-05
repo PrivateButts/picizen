@@ -22,6 +22,10 @@ class Photo(BaseModel):
     lens_make = models.CharField(max_length=255, blank=True, null=True)
     lens_model = models.CharField(max_length=255, blank=True, null=True)
 
+    @property
+    def aspect_ratio(self):
+        return self.image.width / self.image.height
+
     def __str__(self):
         return self.title
 

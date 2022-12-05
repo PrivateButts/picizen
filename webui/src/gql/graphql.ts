@@ -76,6 +76,7 @@ export type OffsetPaginationInput = {
 
 export type Photo = {
   __typename?: 'Photo';
+  aspectRatio: Scalars['Float'];
   blurhash?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   creator?: Maybe<User>;
@@ -85,12 +86,20 @@ export type Photo = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type PhotoDateGroup = {
+  __typename?: 'PhotoDateGroup';
+  totalPhotos: Scalars['Int'];
+  yearMonth: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   album: Album;
   albums: Array<Album>;
+  getPhotosByDateGroup: Array<Photo>;
   me?: Maybe<User>;
   photo: Photo;
+  photoDateGroups: Array<PhotoDateGroup>;
   photos: Array<Photo>;
   taskQueue: Scalars['Int'];
 };
@@ -103,6 +112,11 @@ export type QueryAlbumArgs = {
 
 export type QueryAlbumsArgs = {
   pagination?: InputMaybe<OffsetPaginationInput>;
+};
+
+
+export type QueryGetPhotosByDateGroupArgs = {
+  yearMonth: Scalars['String'];
 };
 
 
@@ -131,6 +145,13 @@ export type TaskQueueQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type TaskQueueQuery = { __typename?: 'Query', taskQueue: number };
 
+export type GetPhotosQueryVariables = Exact<{
+  yearMonth: Scalars['String'];
+}>;
+
+
+export type GetPhotosQuery = { __typename?: 'Query', photos: Array<{ __typename?: 'Photo', id: string, title: string, blurhash?: string | null, image: { __typename?: 'DjangoImageType', url: string, width: number, height: number } }> };
+
 export type UploadPhotoMutationVariables = Exact<{
   title: Scalars['String'];
   file: Scalars['Upload'];
@@ -138,6 +159,11 @@ export type UploadPhotoMutationVariables = Exact<{
 
 
 export type UploadPhotoMutation = { __typename?: 'Mutation', uploadPhoto: { __typename?: 'Photo', id: string } };
+
+export type GetDateGroupsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetDateGroupsQuery = { __typename?: 'Query', photoDateGroups: Array<{ __typename?: 'PhotoDateGroup', yearMonth: string, totalPhotos: number }> };
 
 export type PhotoQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -153,11 +179,6 @@ export type UpdatePhotoMutationVariables = Exact<{
 
 
 export type UpdatePhotoMutation = { __typename?: 'Mutation', updatePhoto: { __typename?: 'Photo', id: string, title: string } };
-
-export type GetAllPhotosQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetAllPhotosQuery = { __typename?: 'Query', photos: Array<{ __typename?: 'Photo', id: string, title: string, blurhash?: string | null, createdAt: any, updatedAt: any, image: { __typename?: 'DjangoImageType', url: string, width: number, height: number } }> };
 
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
@@ -179,10 +200,11 @@ export type UserQueryQuery = { __typename?: 'Query', me?: { __typename?: 'User',
 
 
 export const TaskQueueDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"taskQueue"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taskQueue"}}]}}]} as unknown as DocumentNode<TaskQueueQuery, TaskQueueQueryVariables>;
+export const GetPhotosDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getPhotos"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"yearMonth"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"photos"},"name":{"kind":"Name","value":"getPhotosByDateGroup"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"yearMonth"},"value":{"kind":"Variable","name":{"kind":"Name","value":"yearMonth"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"Field","name":{"kind":"Name","value":"blurhash"}}]}}]}}]} as unknown as DocumentNode<GetPhotosQuery, GetPhotosQueryVariables>;
 export const UploadPhotoDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"uploadPhoto"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"title"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"file"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Upload"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uploadPhoto"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"title"},"value":{"kind":"Variable","name":{"kind":"Name","value":"title"}}},{"kind":"Argument","name":{"kind":"Name","value":"image"},"value":{"kind":"Variable","name":{"kind":"Name","value":"file"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UploadPhotoMutation, UploadPhotoMutationVariables>;
+export const GetDateGroupsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getDateGroups"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"photoDateGroups"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"yearMonth"}},{"kind":"Field","name":{"kind":"Name","value":"totalPhotos"}}]}}]}}]} as unknown as DocumentNode<GetDateGroupsQuery, GetDateGroupsQueryVariables>;
 export const PhotoDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"photo"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"photo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}}]} as unknown as DocumentNode<PhotoQuery, PhotoQueryVariables>;
 export const UpdatePhotoDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updatePhoto"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"title"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updatePhoto"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"title"},"value":{"kind":"Variable","name":{"kind":"Name","value":"title"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}}]}}]} as unknown as DocumentNode<UpdatePhotoMutation, UpdatePhotoMutationVariables>;
-export const GetAllPhotosDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAllPhotos"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"photos"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"blurhash"}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<GetAllPhotosQuery, GetAllPhotosQueryVariables>;
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"username"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"username"},"value":{"kind":"Variable","name":{"kind":"Name","value":"username"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
 export const LogoutDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"logout"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"logout"}}]}}]} as unknown as DocumentNode<LogoutMutation, LogoutMutationVariables>;
 export const UserQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userQuery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]} as unknown as DocumentNode<UserQueryQuery, UserQueryQueryVariables>;
