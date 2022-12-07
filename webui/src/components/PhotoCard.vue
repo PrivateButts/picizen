@@ -4,7 +4,7 @@
             :width="props.photo.image.width"
             :height="props.photo.image.height"
             :hash="props.photo.blurhash!"
-            :src="props.photo.image.url"
+            :src="props.photo.imageUrl"
             :imgAlt="props.photo.title"
             :style="{'aspect-ratio': props.photo.image.width/props.photo.image.height}"
         />

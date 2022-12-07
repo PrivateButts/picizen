@@ -18,6 +18,7 @@ class Photo:
     created_at: auto
     updated_at: auto
     aspect_ratio: float
+    image_url: str
 
 
 @strawberry.type

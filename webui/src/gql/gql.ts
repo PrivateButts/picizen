@@ -14,7 +14,7 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  */
 const documents = {
     "\n  query taskQueue{\n    taskQueue\n  }\n": types.TaskQueueDocument,
-    "\nquery getPhotos($yearMonth: String!) {\n    photos: getPhotosByDateGroup(yearMonth: $yearMonth){\n        id\n        title\n        image{\n            url\n            width\n            height\n        }\n        blurhash\n    }\n}": types.GetPhotosDocument,
+    "\nquery getPhotos($yearMonth: String!) {\n    photos: getPhotosByDateGroup(yearMonth: $yearMonth){\n        id\n        title\n        image{\n            url\n            width\n            height\n        }\n        blurhash\n        imageUrl\n    }\n}": types.GetPhotosDocument,
     "\n                    mutation uploadPhoto($title: String!, $file: Upload!){\n                        uploadPhoto(title: $title, image: $file){\n                            id\n                        }\n                    }\n                ": types.UploadPhotoDocument,
     "\n    query getDateGroups {\n        photoDateGroups{\n            yearMonth\n            totalPhotos\n        }\n    }\n": types.GetDateGroupsDocument,
     "\n                query photo($id: ID!) {\n                    photo(pk: $id) {\n                        id\n                        title\n                        image {\n                            url\n                        }\n                    }\n                }\n            ": types.PhotoDocument,
@@ -31,7 +31,7 @@ export function graphql(source: "\n  query taskQueue{\n    taskQueue\n  }\n"): (
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\nquery getPhotos($yearMonth: String!) {\n    photos: getPhotosByDateGroup(yearMonth: $yearMonth){\n        id\n        title\n        image{\n            url\n            width\n            height\n        }\n        blurhash\n    }\n}"): (typeof documents)["\nquery getPhotos($yearMonth: String!) {\n    photos: getPhotosByDateGroup(yearMonth: $yearMonth){\n        id\n        title\n        image{\n            url\n            width\n            height\n        }\n        blurhash\n    }\n}"];
+export function graphql(source: "\nquery getPhotos($yearMonth: String!) {\n    photos: getPhotosByDateGroup(yearMonth: $yearMonth){\n        id\n        title\n        image{\n            url\n            width\n            height\n        }\n        blurhash\n        imageUrl\n    }\n}"): (typeof documents)["\nquery getPhotos($yearMonth: String!) {\n    photos: getPhotosByDateGroup(yearMonth: $yearMonth){\n        id\n        title\n        image{\n            url\n            width\n            height\n        }\n        blurhash\n        imageUrl\n    }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

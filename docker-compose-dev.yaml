@@ -13,6 +13,18 @@ services:
     image: redis
     restart: unless-stopped
   
+  nginx:
+    build:
+      context: ./docker
+      dockerfile: nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+    volumes:
+      - ./mediafiles:/var/www/protected
+      - ./staticfiles:/var/www/static
+  
   web:
     build:
       context: .

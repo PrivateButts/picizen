@@ -175,3 +175,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', # this is default
     'guardian.backends.ObjectPermissionBackend',
 )
+
+
+# Django sendfile settings
+SENDFILE_BACKEND = 'django_sendfile.backends.nginx'
+SENDFILE_ROOT = MEDIA_ROOT
+SENDFILE_URL = '/protected/'

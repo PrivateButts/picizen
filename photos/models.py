@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from picizen.helpers import BaseModel
@@ -25,6 +26,10 @@ class Photo(BaseModel):
     @property
     def aspect_ratio(self):
         return self.image.width / self.image.height
+    
+    @property
+    def image_url(self):
+        return reverse('serve_photo', kwargs={'photo_id': self.pk})
 
     def __str__(self):
         return self.title

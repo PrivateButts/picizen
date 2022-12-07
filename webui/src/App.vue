@@ -86,7 +86,7 @@ const { result: taskQueue } = useQuery(graphql(`
     taskQueue
   }
 `), null, {
-  pollInterval: 1000
+  pollInterval: 1000 * 60 // TODO: Make this a subscription
 });
 
 const taskCount = computed(() => taskQueue.value?.taskQueue ?? 0)

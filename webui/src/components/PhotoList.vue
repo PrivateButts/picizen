@@ -48,6 +48,7 @@ query getPhotos($yearMonth: String!) {
             height
         }
         blurhash
+        imageUrl
     }
 }`), () => ({
     yearMonth: props.PhotoDateGroup.yearMonth
