@@ -34,8 +34,9 @@ services:
     depends_on:
       - db
       - redis
-    ports:
+    expose:
       - "8000:8000"
+    ports:
       - "8001:8001"
     volumes:
       - .:/usr/src/app
@@ -45,6 +46,7 @@ services:
       - DATABASE_URL=postgres://user:password@db:5432/db
       - REDIS_URL=redis://redis:6379/0
       - HUEY_IMMEDIATE=False
+      - CSRF_TRUSTED_ORIGINS=http://localhost:1337
     command: python manage.py runserver 0.0.0.0:8000
   
   task-runner:

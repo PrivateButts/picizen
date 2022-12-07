@@ -1,11 +1,12 @@
 from django.contrib import admin
+from guardian.admin import GuardedModelAdmin
 
 from .models import Photo, Album, Tag
 from .tasks import process_photo
 
 
 @admin.register(Photo)
-class PhotoAdmin(admin.ModelAdmin):
+class PhotoAdmin(GuardedModelAdmin):
     model = Photo
     list_display = ('title', 'creator', 'created_at', 'updated_at', 'date_taken')
     actions = ['reprocess']
