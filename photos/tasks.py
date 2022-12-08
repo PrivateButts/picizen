@@ -9,12 +9,11 @@ logger = logging.getLogger(__name__)
 
 
 # stolen from https://gist.github.com/snakeye/fdc372dbf11370fe29eb
-def _convert_to_degress(value):
-    """
-    Helper function to convert the GPS coordinates stored in the EXIF to degress in float format
-    :param value:
-    :type value: exifread.utils.Ratio
-    :rtype: float
+def _convert_to_degress(value) -> float:
+    """Helper function to convert the GPS coordinates stored in the EXIF to degress in float format
+
+    Args:
+        value: The coordinate in dms format
     """
     d = float(value.values[0].num) / float(value.values[0].den)
     m = float(value.values[1].num) / float(value.values[1].den)
@@ -24,7 +23,12 @@ def _convert_to_degress(value):
 
 
 def _parse_tag(tag: str, tags: dict) -> Optional[str]:
-    """Convenience function to parse a tag from the exif data safely"""
+    """This function will return None if the tag is not present in the exif data
+
+    Args:
+        tag: The tag to parse
+        tags: The exif data extracted from the image
+    """
     if tag in tags:
         return tags[tag].values
     return None
@@ -32,6 +36,11 @@ def _parse_tag(tag: str, tags: dict) -> Optional[str]:
 
 @db_task()
 def extract_exif(photo):
+    """Extract EXIF data from a photo and save it to the database.
+
+    Args:
+        photo: The photo object to extract EXIF data from
+    """
     tags = exifread.process_file(photo.image)
 
     if "GPS GPSLatitude" in tags and "GPS GPSLongitude" in tags:
@@ -69,11 +78,21 @@ def extract_exif(photo):
 
 @db_task()
 def generate_blurhash(photo):
+    """Generate a blurhash for a photo and save it to the database.
+
+    Args:
+        photo: The photo object to generate a blurhash for
+    """
     photo.blurhash = blurhash.encode(photo.image, x_components=4, y_components=3)
     photo.save()
 
 
 @task()
 def process_photo(photo):
+    """Queue up tasks to process a photo.
+
+    Args:
+        photo: The photo object to process
+    """
     generate_blurhash(photo)
     extract_exif(photo)
