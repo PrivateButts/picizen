@@ -24,11 +24,12 @@ from .gql import schema
 from photos.views import serve_photo, AssignPermView
 
 urlpatterns = [
-    path('admin/assignpermission/', AssignPermView.as_view(), name='assign_perm'),
-    path('admin/', admin.site.urls),
+    path("admin/assignpermission/", AssignPermView.as_view(), name="assign_perm"),
+    path("admin/", admin.site.urls),
     path("graphql/", GraphQLView.as_view(schema=schema)),
-
     path("photo/serve/<int:photo_id>/", serve_photo, name="serve_photo"),
-    path('<path:resource>', TemplateView.as_view(template_name='index.html'), name='home'),
-    path('', TemplateView.as_view(template_name='index.html')),
+    path(
+        "<path:resource>", TemplateView.as_view(template_name="index.html"), name="home"
+    ),
+    path("", TemplateView.as_view(template_name="index.html")),
 ]

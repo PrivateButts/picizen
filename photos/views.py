@@ -11,7 +11,9 @@ from .forms import AssignPermForm
 
 
 class AssignPermView(UserPassesTestMixin, FormView):
-    template_name = 'photos/assign_perm.html'
+    """FormView for assigning permissions to objects."""
+
+    template_name = "photos/assign_perm.html"
     form_class = AssignPermForm
 
     def test_func(self):
@@ -19,23 +21,23 @@ class AssignPermView(UserPassesTestMixin, FormView):
 
     def get_initial(self):
         initial = super().get_initial()
-        initial['content_type'] = self.request.GET.get('ct')
-        initial['items'] = self.request.GET.get('ids')
+        initial["content_type"] = self.request.GET.get("ct")
+        initial["items"] = self.request.GET.get("ids")
         return initial
 
     def get_form(self):
         form = super().get_form()
-        form.fields['permission'].queryset = get_perms_for_model(Photo)
+        form.fields["permission"].queryset = get_perms_for_model(Photo)
         return form
 
     def form_valid(self, form):
         form.execute()
-        return redirect('admin:photos_photo_changelist')
+        return redirect("admin:photos_photo_changelist")
 
 
 def serve_photo(request, photo_id):
     photo = get_object_or_404(Photo, id=photo_id)
-    if request.user.has_perm('photos.view_photo', photo):
+    if request.user.has_perm("photos.view_photo", photo):
         return sendfile(request, photo.image.path)
     else:
         return HttpResponseForbidden()

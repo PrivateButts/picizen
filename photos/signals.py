@@ -14,5 +14,5 @@ def photo_post_delete(sender, instance, **kwargs):
 def photo_post_save(sender, instance, created, **kwargs):
     if created:
         if instance.creator:
-            assign_perm('photos.view_photo', instance.creator, instance)
+            assign_perm("photos.view_photo", instance.creator, instance)
         process_photo(instance)

@@ -12,17 +12,19 @@ class AssignPermForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
     )
     permission = forms.ModelChoiceField(required=True, queryset=None)
-    content_type = forms.CharField(widget = forms.HiddenInput(), required = False)
-    items = forms.CharField(widget = forms.HiddenInput(), required = False)
+    content_type = forms.CharField(widget=forms.HiddenInput(), required=False)
+    items = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     def execute(self):
         if not self.is_valid():
-            raise ValueError('Form is not valid')
+            raise ValueError("Form is not valid")
 
-        users = self.cleaned_data['users']
-        ct = get_object_or_404(ContentType, pk=self.cleaned_data['content_type'])
-        items = get_list_or_404(ct.model_class(), pk__in=self.cleaned_data['items'].split(','))
+        users = self.cleaned_data["users"]
+        ct = get_object_or_404(ContentType, pk=self.cleaned_data["content_type"])
+        items = get_list_or_404(
+            ct.model_class(), pk__in=self.cleaned_data["items"].split(",")
+        )
         for user in users:
-            assign_perm(self.cleaned_data['permission'], user, items)
-        
+            assign_perm(self.cleaned_data["permission"], user, items)
+
         return True

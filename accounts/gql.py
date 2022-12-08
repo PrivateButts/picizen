@@ -7,6 +7,7 @@ from typing import Optional
 
 USER = get_user_model()
 
+
 @strawberry.django.type(USER)
 class User:
     id: auto

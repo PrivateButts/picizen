@@ -9,9 +9,9 @@ from .models import Photo, Album, Tag
 from .tasks import process_photo
 
 
-@admin.action(description='Assign permissions')
+@admin.action(description="Assign permissions")
 def assign_permission(self, request, queryset):
-    selected = queryset.values_list('pk', flat=True)
+    selected = queryset.values_list("pk", flat=True)
     ct = ContentType.objects.get_for_model(queryset.model)
     return HttpResponseRedirect(
         f"{reverse('assign_perm')}?{urlencode({'ct': ct.pk, 'ids': ','.join(str(pk) for pk in selected)})}"
@@ -21,10 +21,10 @@ def assign_permission(self, request, queryset):
 @admin.register(Photo)
 class PhotoAdmin(GuardedModelAdmin):
     model = Photo
-    list_display = ('title', 'creator', 'created_at', 'updated_at', 'date_taken')
-    actions = ['reprocess', assign_permission]
+    list_display = ("title", "creator", "created_at", "updated_at", "date_taken")
+    actions = ["reprocess", assign_permission]
 
-    @admin.action(description='Reprocess photos')
+    @admin.action(description="Reprocess photos")
     def reprocess(self, request, queryset):
         for photo in queryset:
             process_photo(photo)

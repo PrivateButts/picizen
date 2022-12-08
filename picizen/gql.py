@@ -18,4 +18,5 @@ class Query(AccountQuery, PhotoQuery):
 class Mutation(AccountMutation, PhotoMutation):
     pass
 
+
 schema = strawberry.Schema(query=Query, mutation=Mutation)

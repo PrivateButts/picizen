@@ -6,43 +6,47 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('photos', '0002_photo_blurhash'),
+        ("photos", "0002_photo_blurhash"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='photo',
-            name='camera_make',
+            model_name="photo",
+            name="camera_make",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AddField(
-            model_name='photo',
-            name='camera_model',
+            model_name="photo",
+            name="camera_model",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AddField(
-            model_name='photo',
-            name='date_taken',
+            model_name="photo",
+            name="date_taken",
             field=models.DateTimeField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='photo',
-            name='gps_lat',
-            field=models.DecimalField(blank=True, decimal_places=6, max_digits=9, null=True),
+            model_name="photo",
+            name="gps_lat",
+            field=models.DecimalField(
+                blank=True, decimal_places=6, max_digits=9, null=True
+            ),
         ),
         migrations.AddField(
-            model_name='photo',
-            name='gps_lon',
-            field=models.DecimalField(blank=True, decimal_places=6, max_digits=9, null=True),
+            model_name="photo",
+            name="gps_lon",
+            field=models.DecimalField(
+                blank=True, decimal_places=6, max_digits=9, null=True
+            ),
         ),
         migrations.AddField(
-            model_name='photo',
-            name='lens_make',
+            model_name="photo",
+            name="lens_make",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AddField(
-            model_name='photo',
-            name='lens_model',
+            model_name="photo",
+            name="lens_model",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
     ]

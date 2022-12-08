@@ -9,7 +9,7 @@ USER = get_user_model()
 
 class Photo(BaseModel):
     title = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='photos')
+    image = models.ImageField(upload_to="photos")
     blurhash = models.CharField(max_length=255, blank=True, null=True)
 
     creator = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, blank=True)
@@ -26,10 +26,10 @@ class Photo(BaseModel):
     @property
     def aspect_ratio(self):
         return self.image.width / self.image.height
-    
+
     @property
     def image_url(self):
-        return reverse('serve_photo', kwargs={'photo_id': self.pk})
+        return reverse("serve_photo", kwargs={"photo_id": self.pk})
 
     def __str__(self):
         return self.title
@@ -48,8 +48,8 @@ class Album(BaseModel):
 
 class Tag(BaseModel):
     class TagTypes(models.IntegerChoices):
-        GENERIC = 0, _('Generic')
-        PERSON = 1, _('Person')
+        GENERIC = 0, _("Generic")
+        PERSON = 1, _("Person")
 
     name = models.CharField(max_length=50)
     type = models.IntegerField(choices=TagTypes.choices, default=TagTypes.GENERIC)

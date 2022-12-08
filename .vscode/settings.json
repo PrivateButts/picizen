@@ -2,5 +2,6 @@
     "cSpell.words": [
         "blurhash",
         "djhuey"
-    ]
+    ],
+    "python.formatting.provider": "black"
 }
