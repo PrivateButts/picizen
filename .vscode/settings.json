@@ -3,5 +3,7 @@
         "blurhash",
         "djhuey"
     ],
-    "python.formatting.provider": "black"
+    "python.formatting.provider": "black",
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }
