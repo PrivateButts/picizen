@@ -21,9 +21,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from .gql import schema
-from photos.views import serve_photo
+from photos.views import serve_photo, AssignPermView
 
 urlpatterns = [
+    path('admin/assignpermission/', AssignPermView.as_view(), name='assign_perm'),
     path('admin/', admin.site.urls),
     path("graphql/", GraphQLView.as_view(schema=schema)),
 
