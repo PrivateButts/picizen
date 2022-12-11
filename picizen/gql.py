@@ -8,9 +8,13 @@ from photos.gql import Query as PhotoQuery
 from photos.gql import Mutation as PhotoMutation
 
 
+def resolve_task_queue():
+    return len(HUEY.pending())
+
+
 @strawberry.type
 class Query(AccountQuery, PhotoQuery):
-    task_queue: int = strawberry.field(resolver=lambda: len(HUEY.pending()))
+    task_queue: int = strawberry.field(resolver=resolve_task_queue)
     pass
 
 

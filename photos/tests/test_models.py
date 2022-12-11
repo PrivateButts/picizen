@@ -2,8 +2,9 @@ from io import BytesIO
 from PIL import Image
 from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.contrib.auth.models import User
 
-from photos.models import Photo
+from photos.models import Photo, Album, Tag
 
 
 class PhotoModelTestCase(TestCase):
@@ -28,3 +29,20 @@ class PhotoModelTestCase(TestCase):
 
     def test_image_url(self):
         self.assertEqual(self.photo.image_url, "/photo/serve/1/")
+
+
+class AlbumModelTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="test", password="test")
+        self.album = Album.objects.create(title="Test Album", creator=self.user)
+
+    def test__str__(self):
+        self.assertEqual(str(self.album), "Test Album")
+
+
+class TagModelTestCase(TestCase):
+    def setUp(self):
+        self.tag = Tag.objects.create(name="Test Tag")
+
+    def test__str__(self):
+        self.assertEqual(str(self.tag), "Test Tag")
