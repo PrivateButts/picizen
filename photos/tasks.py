@@ -43,7 +43,7 @@ def extract_exif(photo):
                     tags["EXIF DateTimeOriginal"].values, "%Y:%m:%d %H:%M:%S"
                 )
             )
-        except ValueError as e:
+        except ValueError as e:  # pragma: no cover
             logger.warning(
                 f'Unparsable datetime format "{tags["EXIF DateTimeOriginal"].values}" found in EXIF data for photo {photo.id}:'
             )
