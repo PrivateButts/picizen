@@ -1,21 +1,17 @@
+import unittest.mock as mock
 from decimal import Decimal
 from io import BytesIO
-from PIL import Image
+
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import Signal
 from django.test import TestCase
-from django.core.files.uploadedfile import SimpleUploadedFile
-import unittest.mock as mock
 from django.utils import timezone as tz
-from django.db.models.signals import post_delete, post_save
+from photos.models import Photo
 
 from photos.signals import photo_post_save
-from photos.models import Photo
-from photos.tasks import (
-    _parse_tag,
-    extract_exif,
-    generate_blurhash,
-    process_photo,
-)
+from photos.tasks import _parse_tag, extract_exif, generate_blurhash, process_photo
+from PIL import Image
 
 
 class TaskHelpersTestCase(TestCase):

@@ -1,10 +1,12 @@
 from io import BytesIO
-from PIL import Image
-from django.test import TestCase
-from django.core.files.uploadedfile import SimpleUploadedFile
+
 from django.contrib.auth.models import User
 
-from photos.models import Photo, Album, Tag
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase
+
+from photos.models import Album, Photo, Tag
+from PIL import Image
 
 
 class PhotoModelTestCase(TestCase):

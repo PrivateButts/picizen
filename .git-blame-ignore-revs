@@ -1,2 +1,5 @@
 # Migrate code style to Black
 ca6f35a911136f0d173f6256303c6b035541ad1f
+
+# Altered rules and sorted imports
+0a24eb8f8eb18ea8349b74e1582124fbe864147b
