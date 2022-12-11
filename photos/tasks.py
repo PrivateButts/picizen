@@ -1,8 +1,9 @@
 import logging
 from typing import Optional
+
 import blurhash, exifread
-from huey.contrib.djhuey import db_task, task
 from django.utils import timezone as tz
+from huey.contrib.djhuey import db_task, task
 
 
 logger = logging.getLogger(__name__)

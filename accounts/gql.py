@@ -1,8 +1,9 @@
+from typing import Optional
+
 import strawberry
+from django.contrib.auth import get_user_model
 from strawberry import auto
 from strawberry.django import auth
-from django.contrib.auth import get_user_model
-from typing import Optional
 
 
 USER = get_user_model()

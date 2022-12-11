@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
-from photos.models import Photo
 from guardian.shortcuts import assign_perm
+
+from photos.models import Photo
 
 
 class Command(BaseCommand):

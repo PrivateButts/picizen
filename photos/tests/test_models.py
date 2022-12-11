@@ -1,9 +1,10 @@
 from io import BytesIO
-from PIL import Image
-from django.test import TestCase
+
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase
 
 from photos.models import Photo
+from PIL import Image
 
 
 class PhotoModelTestCase(TestCase):

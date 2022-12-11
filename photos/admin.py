@@ -1,11 +1,11 @@
 from django.contrib import admin
-from guardian.admin import GuardedModelAdmin
-from django.http import HttpResponseRedirect
 from django.contrib.contenttypes.models import ContentType
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.http import urlencode
+from guardian.admin import GuardedModelAdmin
 
-from .models import Photo, Album, Tag
+from .models import Album, Photo, Tag
 from .tasks import process_photo
 
 

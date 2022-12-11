@@ -1,11 +1,12 @@
 # schema.py
-import strawberry
 from typing import List
+
+import strawberry
+from accounts.gql import User as UserType
 from strawberry import auto, ID
 from strawberry.file_uploads import Upload
 
 from . import models
-from accounts.gql import User as UserType
 
 
 @strawberry.django.type(models.Photo)
