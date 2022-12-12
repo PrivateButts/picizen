@@ -1,11 +1,11 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from guardian.shortcuts import assign_perm
 
 from photos.models import Photo
 
 
 class Command(BaseCommand):
-    help = "Queues all photos for reprocessing"
+    help = "Restores creator permissions for all photos"
 
     def handle(self, *args, **options):
         for photo in Photo.objects.filter(creator__isnull=False):

@@ -1,17 +1,16 @@
 import unittest.mock as mock
 from decimal import Decimal
-from io import BytesIO
 
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.db.models.signals import post_delete, post_save
+from django.db.models.signals import post_save
 from django.dispatch import Signal
 from django.test import TestCase
 from django.utils import timezone as tz
+
 from photos.models import Photo
 
 from photos.signals import photo_post_save
-from photos.tasks import _parse_tag, extract_exif, generate_blurhash, process_photo
-from PIL import Image
+from photos.tasks import _parse_tag, extract_exif, generate_blurhash
 
 
 class TaskHelpersTestCase(TestCase):
@@ -48,8 +47,14 @@ class TaskHelpersTestCase(TestCase):
 
 
 class PhotoTasksTestCase(TestCase):
-    def test_extract_exif(self):
+    def setUp(self):
         Signal.disconnect(post_save, receiver=photo_post_save, sender=Photo)
+
+    def tearDown(self) -> None:
+        Signal.connect(post_save, receiver=photo_post_save, sender=Photo)
+        return super().tearDown()
+
+    def test_extract_exif(self):
         with open("photos/fixtures/EXIF_Test.jpg", "rb") as f:
             p = Photo.objects.create(
                 title="Test Photo",
@@ -75,7 +80,6 @@ class PhotoTasksTestCase(TestCase):
 
     @mock.patch("photos.signals.photo_post_save")
     def test_generate_blurhash(self, mock_signal):
-        Signal.disconnect(post_save, receiver=photo_post_save, sender=Photo)
         with open("photos/fixtures/EXIF_Test.jpg", "rb") as f:
             p = Photo.objects.create(
                 title="Test Photo",

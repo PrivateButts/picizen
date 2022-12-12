@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "huey.contrib.djhuey",
     "guardian",
     "django_sendfile",
+    "accounts",
     "photos",
 ]
 

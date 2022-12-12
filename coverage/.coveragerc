@@ -1,6 +1,8 @@
-# .coveragerc to control coverage.py
 [run]
+data_file = coverage/.coverage
 branch = True
+omit = 
+    manage.py
 
 [report]
 # Regexes for lines to exclude from consideration
@@ -24,7 +26,6 @@ exclude_lines =
     @(abc\.)?abstractmethod
 
 ignore_errors = True
-data_file = coverage/.coverage
 
 [html]
 directory = coverage/html

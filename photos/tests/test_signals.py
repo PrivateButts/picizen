@@ -19,6 +19,8 @@ class PhotoSignalsTestCase(TestCase):
             creator=user,
         )
         p.refresh_from_db()
-        self.assertIsNotNone(p.blurhash)
-        self.assertIsNotNone(p.date_taken)
-        self.assertTrue(p.creator.has_perm("photos.view_photo", p))
+        self.assertIsNotNone(p.blurhash, msg="Blurhash not generated")
+        self.assertIsNotNone(p.date_taken, msg="EXIF not extracted")
+        self.assertTrue(
+            p.creator.has_perm("photos.view_photo", p), msg="Permissions not set"
+        )
