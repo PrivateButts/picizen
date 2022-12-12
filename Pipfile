@@ -27,6 +27,8 @@ pytest = "*"
 pytest-django = "*"
 pytest-cov = "*"
 ufmt = "*"
+factory-boy = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.10"

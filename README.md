@@ -17,7 +17,7 @@ Picizen's goal is to provide folks with a personal photo manager that is easy to
 - [ ] Device Sync
 - [ ] Albums that can share photos
 - [ ] Easy tagging
-- [ ] EXIF parsing
+- [X] EXIF parsing
 - [ ] Powerful Search
 
 ## FAQ
@@ -33,3 +33,22 @@ I agree, I'm open to suggestions
 ### Your Composition API code is a bit weird
 
 I'm also using this project as an excuse to get more comfortable with Vue's composition api. I'm not the best at it yet, so any feedback on how to better use it is appreciated.
+
+
+## Contribution
+
+This project is still in flux, and massive changes to fundamental aspects will happen. This section will be updated as the project matures.
+
+### Setting up an environment
+
+Project dependencies are managed by pipenv, you can setup a development environment by running `pipenv sync --dev` after cloning.
+
+The docker stack can be spun up using `docker compose -f ./docker-compose-dev.yaml up`.
+
+### Running Unit Tests for the backend
+
+This project uses pytest to run the Django tests, you can run it with `pipenv run pytest`.
+
+### Regenerating GQL Schema
+
+To aid with query typing, a command has been added to npm to watch for code changes and regenerate types. It can be invoked with `npm run codegen-watch` from the webui folder.

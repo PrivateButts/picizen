@@ -3,6 +3,8 @@ from typing import List
 
 import strawberry
 from accounts.gql import User as UserType
+
+from picizen.helpers import IsAuthenticated
 from strawberry import auto, ID
 from strawberry.file_uploads import Upload
 
@@ -95,14 +97,14 @@ class Query:
 
 @strawberry.type
 class Mutation:
-    @strawberry.mutation
+    @strawberry.mutation(permission_classes=[IsAuthenticated])
     def upload_photo(self, info, title: str, image: Upload) -> Photo:
         photo = models.Photo.objects.create(
             title=title, image=image, creator=info.context.request.user
         )
         return photo
 
-    @strawberry.mutation
+    @strawberry.mutation(permission_classes=[IsAuthenticated])
     def update_photo(self, info, id: ID, title: str) -> Photo:
         photo = models.Photo.objects.get(id=id)
         photo.title = title

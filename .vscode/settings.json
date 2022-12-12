@@ -1,13 +1,27 @@
 {
     "cSpell.words": [
         "blurhash",
-        "djhuey"
+        "COOLPIX",
+        "djhuey",
+        "EXIF",
+        "picizen"
     ],
     "python.formatting.provider": "none",
-    "editor.defaultFormatter": "omnilib.ufmt",
     "editor.formatOnSave": true,
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [
+        "--max-line-length=88",
+        //     "--ignore=E203",
+        //     "--ignore=E266",
+        //     "--ignore=E501",
+        //     "--ignore=W503",
+        //     "--select = B,C,E,F,W,T4,B9",
+        //     "--max-complexity = 18"
+    ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
+    "python.testing.debugPort": 8001,
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
@@ -17,4 +31,7 @@
         "**/Thumbs.db": true,
     },
     "coverage-gutters.coverageBaseDir": "coverage",
+    "[python]": {
+        "editor.defaultFormatter": "omnilib.ufmt"
+    },
 }

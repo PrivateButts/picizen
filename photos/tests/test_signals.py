@@ -1,24 +1,24 @@
-from django.test import TestCase
-from io import BytesIO
-from PIL import Image
-from django.core.files.uploadedfile import SimpleUploadedFile
+import os
 
-from photos.models import Photo
+from django.contrib.auth.models import User
+from django.test import TestCase
+
+from .factories import PhotoFactory
 
 
 class PhotoSignalsTestCase(TestCase):
     def test_photo_post_delete(self):
-        testImg = Image.new("RGB", (1000, 500))
-        testImgIO = BytesIO()
-        testImg.save(testImgIO, "JPEG")
-        testImgIO.seek(0)
-
-        self.photo = Photo.objects.create(
-            title="Test Photo",
-            image=SimpleUploadedFile(
-                name="test.jpg", content=testImgIO.read(), content_type="image/jpeg"
-            ),
-        )
+        self.photo = PhotoFactory.create()
+        path = self.photo.image.path
+        self.photo.delete()
+        self.assertFalse(os.path.exists(path))
 
     def test_photo_post_save(self):
-        pass
+        user = User.objects.create_user(username="test", password="test")
+        p = PhotoFactory.create(
+            creator=user,
+        )
+        p.refresh_from_db()
+        self.assertIsNotNone(p.blurhash)
+        self.assertIsNotNone(p.date_taken)
+        self.assertTrue(p.creator.has_perm("photos.view_photo", p))
