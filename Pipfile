@@ -8,7 +8,6 @@ django = "*"
 pillow = "*"
 django-vite = "*"
 django-environ = "*"
-strawberry-graphql = "*"
 strawberry-graphql-django = "*"
 blurhash-python = "*"
 huey = "*"
@@ -19,6 +18,9 @@ django-sendfile2 = "*"
 django-guardian = "*"
 exifread = "*"
 requests = "*"
+strawberry-graphql = {extras = ["asgi"], version = "*"}
+channels = "*"
+channels-redis = "*"
 
 [dev-packages]
 debugpy = "*"

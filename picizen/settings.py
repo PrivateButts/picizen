@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "channels",
     "django_vite",
     "huey.contrib.djhuey",
     "guardian",
@@ -184,3 +185,15 @@ AUTHENTICATION_BACKENDS = (
 SENDFILE_BACKEND = "django_sendfile.backends.nginx"
 SENDFILE_ROOT = MEDIA_ROOT
 SENDFILE_URL = "/protected/"
+
+
+# Channels
+ASGI_APPLICATION = 'picizen.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [env.str("REDIS_URL")],
+        },
+    },
+}
