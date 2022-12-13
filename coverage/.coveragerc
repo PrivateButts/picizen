@@ -3,6 +3,8 @@ data_file = coverage/.coverage
 branch = True
 omit = 
     manage.py
+    picizen/asgi.py
+    picizen/wsgi.py
 
 [report]
 # Regexes for lines to exclude from consideration
