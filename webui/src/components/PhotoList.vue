@@ -1,35 +1,54 @@
 <template>
-    <div ref="listContainer" class="photo-grid" :style="containerStyle">
-            <!-- <div class="col" v-for="photo in photos">
+    <div ref="listContainer" class="photo-grid">
+        <!-- <div class="col" v-for="photo in photos">
             </div> -->
-        <div
-            v-for="layout in photoLayout"
-            :style="layout.style"
-            class="photo-grid-item"
-        >
-            <PhotoCard :photo="layout.photo" @click="$router.push(`/photos/${layout.photo.id}/`)">{{ layout.photo.title }}</PhotoCard>
+        <div v-for="layout in photoLayout" :style="layout.style" class="photo-grid-item">
+            <PhotoCard :photo="layout.photo" @click="$router.push(`/photos/${layout.photo.id}/`)">{{ layout.photo.title
+            }}</PhotoCard>
         </div>
     </div>
 </template>
 
 <style>
-.photo-grid{
-    position: relative;
+.photo-grid {
+    --min-width: 33%;
+    --row-height: 20vh;
+    --max-row-height: 50vh;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0.25rem;
 }
 
-.photo-grid-item{
-    position: absolute;
-    display: inline-block;
+.photo-grid-item {
+    --ratio: calc(var(--w) / var(--h));
+    flex-grow: calc(var(--ratio) * 100);
+    flex-basis: calc(var(--ratio) * var(--row-height));
+    margin: 0.25rem;
+    min-width: var(--min-width);
+}
+
+.photo-grid-item>div {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-width: 100%;
+    min-height: 100%;
+    /* max-height: var(--max-row-height); */
+    /* object-fit: cover; */
+}
+
+.photo-grid-item>div>div>div>img {
+    object-fit: cover;
 }
 </style>
 
-<script setup lang="ts">import { useQuery } from '@vue/apollo-composable';
+<script setup lang="ts">
+import { useQuery } from '@vue/apollo-composable';
 import { graphql } from '../gql';
 import PhotoCard from '../components/PhotoCard.vue';
 import { Photo, PhotoDateGroup } from '../gql/graphql';
 import { computed, reactive } from '@vue/reactivity';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
-import justifiedLayout from 'justified-layout'
 
 const listContainer = ref<HTMLElement | null>(null)
 
@@ -58,52 +77,12 @@ const photos = computed(() => {
     return result.value?.photos as [Photo] ?? []
 })
 
-const containerWidth = ref(1000)
-function updateContainerWidth() {
-    if (listContainer.value == null) return
-    containerWidth.value = listContainer.value.clientWidth
-}
-
-const containerResizeObserver = new ResizeObserver(updateContainerWidth)
-onMounted(() => {
-    containerResizeObserver.observe(listContainer.value!)
-    updateContainerWidth()
-//   window.addEventListener("resize", updateContainerWidth);
-})
-onUnmounted(() => {
-    containerResizeObserver.disconnect()
-//   window.removeEventListener("resize", updateContainerWidth);
-})
-
-const geometry = computed(() => {
-    if(listContainer.value == null) return null
-
-    return justifiedLayout(photos.value.map(photo => {
-        return photo.image.width / photo.image.height
-    }), {
-        containerWidth: containerWidth.value,
-    })
-})
-
 const photoLayout = computed(() => {
-    if(geometry.value == null) return []
-
     return photos.value.map((photo, index) => {
         return {
             photo: photo,
-            style: reactive({
-                left: geometry.value!.boxes[index].left + "px",
-                top: geometry.value!.boxes[index].top + "px",
-                width: geometry.value!.boxes[index].width + "px",
-                height: geometry.value!.boxes[index].height + "px"
-            })
+            style: reactive({ "--w": photo.image.width, "--h": photo.image.height })
         }
-    })
-})
-
-const containerStyle = computed(() => {
-    return reactive({
-        height: geometry.value != null ? geometry.value.containerHeight + "px" : "0px"
     })
 })
 </script>
