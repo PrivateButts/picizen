@@ -18,6 +18,7 @@ psycopg2-binary = "*"
 django-sendfile2 = "*"
 django-guardian = "*"
 exifread = "*"
+requests = "*"
 
 [dev-packages]
 debugpy = "*"
