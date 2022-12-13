@@ -13,12 +13,14 @@
                     </span>
                 </h1>
             </div>
-            <div class="w-100 flex-grow-1 overflow-hidden d-flex justify-content-center" @wheel.prevent="scaleImage"
-                @mousemove.prevent="offsetImage" @mousedown="() => panningImage = true"
+            <div class="flex-grow-1 overflow-hidden d-flex justify-content-center w-100 position-relative"
+                @wheel.prevent="scaleImage" @mousemove.prevent="offsetImage" @mousedown="() => panningImage = true"
                 @mouseup="() => panningImage = false">
-                <img ref="imageElement" class="w-100 image align-self-center" :src="photo.imageUrl" :style="{
-                    transform: `scale(${imageScale}) translate(${imageOffsetX}px, ${imageOffsetY}px)`,
-                }" />
+                <div class="position-absolute top-0 bottom-0 start-0 end-0">
+                    <img ref="imageElement" class="image align-self-center" :src="photo.imageUrl" :style="{
+                        transform: `scale(${imageScale}) translate(${imageOffsetX}px, ${imageOffsetY}px)`,
+                    }" />
+                </div>
             </div>
         </div>
 
@@ -36,7 +38,11 @@
 
 <style scoped>
 .image {
-    transition: transform 0.1s;
+    transition-property: transform;
+    transition-duration: 0.1s;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
 }
 </style>
 
@@ -139,8 +145,8 @@ function scaleImage(event: WheelEvent) {
     }
 
     imageScale.value = newScale
-    imageOffsetX.value = (imageOffsetX.value * scale) / newScale
-    imageOffsetY.value = (imageOffsetY.value * scale) / newScale
+    imageOffsetX.value = (imageOffsetX.value * newScale) / scale
+    imageOffsetY.value = (imageOffsetY.value * newScale) / scale
 }
 
 function offsetImage(event: MouseEvent) {
