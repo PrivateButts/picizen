@@ -36,17 +36,18 @@ CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "channels",
     "django_vite",
     "huey.contrib.djhuey",
     "guardian",
     "django_sendfile",
+    "channels",
     "accounts",
     "photos",
 ]
@@ -188,11 +189,11 @@ SENDFILE_URL = "/protected/"
 
 
 # Channels
-ASGI_APPLICATION = 'picizen.asgi.application'
+ASGI_APPLICATION = "picizen.asgi.application"
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
             "hosts": [env.str("REDIS_URL")],
         },
     },

@@ -19,8 +19,8 @@ django-guardian = "*"
 exifread = "*"
 requests = "*"
 strawberry-graphql = {extras = ["asgi"], version = "*"}
-channels = "*"
 channels-redis = "*"
+channels = {extras = ["daphne"], version = "*"}
 
 [dev-packages]
 debugpy = "*"
