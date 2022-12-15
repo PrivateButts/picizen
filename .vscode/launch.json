@@ -23,10 +23,15 @@
 				{
 					"localRoot": "${workspaceFolder}",
 					"remoteRoot": "/usr/src/app"
+				},
+				{
+					"localRoot": "/home/rbutts/.local/share/virtualenvs/picizen-e79AFsD6",
+					"remoteRoot": "/opt/venv"
 				}
 			],
 			"port": 8001,
 			"host": "127.0.0.1",
+			"justMyCode": false
 		},
 		{
 			"name": "Docker Tasks",

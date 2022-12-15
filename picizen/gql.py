@@ -1,21 +1,22 @@
-from typing import List
-
 import channels.layers
 
 import strawberry
 
 from accounts.gql import Mutation as AccountMutation, Query as AccountQuery
-from huey.contrib.djhuey import HUEY
+from celery import current_app
 from photos.gql import Mutation as PhotoMutation, Query as PhotoQuery
+
 
 channel_layer = channels.layers.get_channel_layer()
 
 
 def resolve_task_queue():
-    return len(HUEY.pending())
+    print("resolve task queue")
+    return current_app.pool.connection.default_channel.client.llen("celery")
 
 
 async def updateTaskQueue(remaining: int):
+    print("updating task queue")
     await channel_layer.group_send("taskQueue_updates", {"remaining": remaining})
 
 
@@ -31,6 +32,8 @@ class TaskQueueSubscription:
             while True:
                 # Wait for update
                 msg = await channel_layer.receive(channel)
+
+                print("received queue update")
                 # Send update to client
                 yield msg["remaining"]
         finally:
@@ -49,4 +52,9 @@ class Mutation(AccountMutation, PhotoMutation):
     pass
 
 
-schema = strawberry.Schema(query=Query, mutation=Mutation)
+@strawberry.type
+class Subscription(TaskQueueSubscription):
+    pass
+
+
+schema = strawberry.Schema(query=Query, mutation=Mutation, subscription=Subscription)

@@ -12,6 +12,8 @@ services:
   redis:
     image: redis
     restart: unless-stopped
+    ports:
+      - 6379:6379
 
   nginx:
     build:
@@ -46,8 +48,7 @@ services:
     environment:
       - DATABASE_URL=postgres://user:password@db:5432/db
       - REDIS_URL=redis://redis:6379/0
-      - HUEY_IMMEDIATE=False
-      - CSRF_TRUSTED_ORIGINS=http://localhost:1337
+      - CSRF_TRUSTED_ORIGINS=http://localhost:1337,http://localhost:8000,ws://localhost:1337,ws://localhost:8000
     command: python manage.py runserver 0.0.0.0:8000
 
   task-runner:
@@ -68,8 +69,8 @@ services:
     environment:
       - DATABASE_URL=postgres://user:password@db:5432/db
       - REDIS_URL=redis://redis:6379/0
-      - HUEY_IMMEDIATE=False
-    command: python manage.py run_huey
+      - GEVENT_SUPPORT=True
+    command: watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- celery -A picizen worker -l INFO
 
   webui-vite:
     build:
@@ -79,7 +80,6 @@ services:
       - "3000:3000"
     volumes:
       - ./webui:/usr/src/app
-      - /usr/src/app/node_modules
 
 volumes:
   db:

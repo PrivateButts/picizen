@@ -14,7 +14,6 @@ def main():
         if (
             os.environ.get("RUN_MAIN")
             or os.environ.get("WERKZEUG_RUN_MAIN")
-            or "run_huey" in sys.argv
         ):
             import debugpy
 
