@@ -1,17 +1,24 @@
 <template>
     <div v-if="photo" class="d-flex h-100 flex-column">
         <div class="mt-n2 flex-grow-1 d-flex flex-column justify-content-between">
-            <div class="ps-3 pt-3 bg-light w-100 border-bottom border">
-                <h1 class="">
-                    <span v-show="editing">
+            <div class="ps-3 pt-3 bg-light w-100 border-bottom border d-flex">
+                <div class="flex-grow-1">
+                    <div v-show="editing">
                         <input ref="titleInput" type="text" class="form-control" v-model="photoTitle"
                             @change="updateTitle" @keyup.enter="updateTitle">
-                    </span>
-                    <span v-if="!editing">
-                        {{ photoTitle }}
-                        <i @click="editTitle" class="bi bi-pencil"></i>
-                    </span>
-                </h1>
+                    </div>
+                    <div v-if="!editing" @click="editTitle">
+                        <h3 class="">
+                            {{ photoTitle }}
+                        </h3>
+                    </div>
+                </div>
+                <button class="btn btn-outline-info me-3 mb-3" @click="sidebarCollapsed = !sidebarCollapsed"
+                    type="button" data-bs-toggle="collapse" data-bs-target="#photoSidebar" aria-expanded="false"
+                    aria-controls="photoSidebar">
+                    <span v-if="sidebarCollapsed"><i class="bi bi-info-circle"></i></span>
+                    <span v-else><i class="bi bi-info-circle-fill"></i></span>
+                </button>
             </div>
             <div class="flex-grow-1 overflow-hidden d-flex justify-content-center w-100 position-relative"
                 @wheel.prevent="scaleImage" @mousemove.prevent="offsetImage" @mousedown="() => panningImage = true"
@@ -20,6 +27,47 @@
                     <img ref="imageElement" class="image align-self-center" :src="photo.imageUrl" :style="{
                         transform: `scale(${imageScale}) translate(${imageOffsetX}px, ${imageOffsetY}px)`,
                     }" />
+                </div>
+                <div class="position-absolute top-0 bottom-0 end-0">
+                    <div id="photoSidebar" class="photo-sidebar bg-light border-start border-bottom collapse p-3">
+                        <div class="mb-3" v-if="photo.creator">
+                            <span class="fw-bold d-block">Creator</span>
+                            <span class="">{{ photo.creator.username }}</span>
+                        </div>
+                        <div class="mb-3" v-if="photo.dateTaken">
+                            <span class="fw-bold d-block">Date Taken</span>
+                            <span class="">{{ new Date(photo.dateTaken).toLocaleString() }}</span>
+                        </div>
+
+                        <div class="mb-3" v-if="photo.gpsLat && photo.gpsLon">
+                            <span class="fw-bold d-block">Location</span>
+                            <span class="">
+                                <a :href="`https://www.google.com/maps/place/${photo.gpsLat},${photo.gpsLon}`"
+                                    target="_blank">
+                                    {{ `${photo.gpsLat}, ${photo.gpsLon}` }}
+                                </a>
+                            </span>
+                        </div>
+
+                        <div class="mb-3" v-if="photo.cameraMake">
+                            <span class="fw-bold d-block">Camera Make</span>
+                            <span class="">{{ photo.cameraMake }}</span>
+                        </div>
+                        <div class="mb-3" v-if="photo.cameraModel">
+                            <span class="fw-bold d-block">Camera Model</span>
+                            <span class="">{{ photo.cameraModel }}</span>
+                        </div>
+
+                        <div class="mb-3" v-if="photo.lensMake">
+                            <span class="fw-bold d-block">Lens Make</span>
+                            <span class="">{{ photo.lensMake }}</span>
+                        </div>
+                        <div class="mb-3" v-if="photo.lensModel">
+                            <span class="fw-bold d-block">Lens Model</span>
+                            <span class="">{{ photo.lensModel }}</span>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,6 +92,10 @@
     width: 100%;
     height: 100%;
 }
+
+.photo-sidebar {
+    width: 300px;
+}
 </style>
 
 <script setup lang="ts">
@@ -64,6 +116,7 @@ const imageScale = ref(1);
 const imageOffsetX = ref(0);
 const imageOffsetY = ref(0);
 const panningImage = ref(false);
+const sidebarCollapsed = ref(true);
 
 
 
@@ -77,6 +130,17 @@ const { result: photoQuery } = useQuery(graphql(`
                 height
             }
             imageUrl
+
+            creator {
+                username
+            }
+            dateTaken
+            gpsLat
+            gpsLon
+            cameraMake
+            cameraModel
+            lensMake
+            lensModel
         }
     }
 `), () => ({

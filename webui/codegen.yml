@@ -5,5 +5,5 @@ generates:
     plugins: []
     config:
       useTypeImports: true
-documents: ['**/*.vue', '**/*.ts']
+documents: ['src/**/*.vue', 'src/**/*.ts']
 ignoreNoDocuments: true

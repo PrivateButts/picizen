@@ -3,6 +3,7 @@
         "blurhash",
         "COOLPIX",
         "EXIF",
+        "exifread",
         "picizen"
     ],
     "python.formatting.provider": "none",

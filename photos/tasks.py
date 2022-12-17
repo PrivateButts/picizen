@@ -50,7 +50,7 @@ def extract_exif(pid: int):
             )
         except ValueError:  # pragma: no cover
             logger.warning(
-                f'Unparsable datetime format "{tags["EXIF DateTimeOriginal"].values}" found in EXIF data for photo {photo.id}:'
+                f'Unparsable datetime format "{tags["EXIF DateTimeOriginal"].values}" found in EXIF data for photo {photo.id}:'  # noqa: E501
             )
 
     photo.camera_make = _parse_tag("Image Make", tags)

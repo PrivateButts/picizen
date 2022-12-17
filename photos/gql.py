@@ -23,6 +23,14 @@ class Photo:
     aspect_ratio: float
     image_url: str
 
+    date_taken: auto
+    gps_lat: auto
+    gps_lon: auto
+    camera_make: auto
+    camera_model: auto
+    lens_make: auto
+    lens_model: auto
+
 
 @strawberry.type
 class PhotoDateGroup:
