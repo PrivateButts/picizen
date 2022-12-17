@@ -99,7 +99,15 @@ taskSub({
     subscription taskQueueSub {
       taskQueueUpdated
     }`,
-  )
+  ),
+  updateQuery: (prev, { subscriptionData }) => {
+    if (!subscriptionData.data) {
+      return prev;
+    }
+    return {
+      taskQueue: subscriptionData.data.taskQueueUpdated
+    };
+  }
 })
 
 const taskCount = computed(() => taskQueue.value?.taskQueue ?? 0)

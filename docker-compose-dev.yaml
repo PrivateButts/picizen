@@ -78,6 +78,8 @@ services:
       dockerfile: docker/webui
     ports:
       - "3000:3000"
+    environment:
+      - VITE_PUBLIC_URL=http://localhost:1337/
     volumes:
       - ./webui:/usr/src/app
 
