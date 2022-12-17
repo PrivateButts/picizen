@@ -1,4 +1,5 @@
 import os
+from unittest.mock import patch
 
 from django.contrib.auth.models import User
 from django.test import TestCase
@@ -13,14 +14,13 @@ class PhotoSignalsTestCase(TestCase):
         self.photo.delete()
         self.assertFalse(os.path.exists(path))
 
-    def test_photo_post_save(self):
+    @patch("photos.tasks.process_photo.delay")
+    def test_photo_post_save(self, mock_process_photo):
         user = User.objects.create_user(username="test", password="test")
         p = PhotoFactory.create(
             creator=user,
         )
-        p.refresh_from_db()
-        self.assertIsNotNone(p.blurhash, msg="Blurhash not generated")
-        self.assertIsNotNone(p.date_taken, msg="EXIF not extracted")
         self.assertTrue(
             p.creator.has_perm("photos.view_photo", p), msg="Permissions not set"
         )
+        mock_process_photo.assert_called()

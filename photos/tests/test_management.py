@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import Signal
@@ -42,6 +44,12 @@ class FixPermissionsTestCase(TestCase):
         )
 
 
+def setBlurhash(pid):
+    photo = Photo.objects.get(pk=pid)
+    photo.blurhash = "test"
+    photo.save()
+
+
 class ReprocessPhotosTestCase(TestCase):
     def setUp(self):
         Signal.disconnect(post_save, receiver=photo_post_save, sender=Photo)
@@ -51,7 +59,11 @@ class ReprocessPhotosTestCase(TestCase):
         Signal.connect(post_save, receiver=photo_post_save, sender=Photo)
         return super().tearDown()
 
-    def test_reprocess_photos(self):
+    @patch(
+        "photos.management.commands.reprocess_photos.process_photo.delay",
+        new=setBlurhash,
+    )
+    def test_reprocess_photos(self, *args, **kwargs):
         self.assertTrue(all([not photo.blurhash for photo in self.photos]))
         reprocess_photos.Command().handle()
         [photo.refresh_from_db() for photo in self.photos]
