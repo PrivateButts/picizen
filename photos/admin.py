@@ -27,7 +27,7 @@ class PhotoAdmin(GuardedModelAdmin):
     @admin.action(description="Reprocess photos")
     def reprocess(self, request, queryset):
         for photo in queryset:
-            process_photo(photo)
+            process_photo.delay(photo.pk)
         self.message_user(request, f"{queryset.count()} photos have been reprocessed.")
 
 

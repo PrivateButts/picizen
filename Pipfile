@@ -8,10 +8,8 @@ django = "*"
 pillow = "*"
 django-vite = "*"
 django-environ = "*"
-strawberry-graphql = "*"
 strawberry-graphql-django = "*"
 blurhash-python = "*"
-huey = "*"
 redis = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
@@ -19,6 +17,11 @@ django-sendfile2 = "*"
 django-guardian = "*"
 exifread = "*"
 requests = "*"
+strawberry-graphql = {extras = ["asgi"], version = "*"}
+channels-redis = "*"
+channels = {extras = ["daphne"], version = "*"}
+gevent = "*"
+celery = "*"
 
 [dev-packages]
 debugpy = "*"
@@ -30,6 +33,7 @@ pytest-cov = "*"
 ufmt = "*"
 factory-boy = "*"
 flake8 = "*"
+watchdog = "*"
 
 [requires]
 python_version = "3.10"

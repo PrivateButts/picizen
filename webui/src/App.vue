@@ -3,7 +3,8 @@
     <nav class="navbar navbar-expand-lg bg-light border-bottom">
       <div class="container-fluid">
         <router-link :to="{ name: 'Home' }" class="navbar-brand">picizen</router-link>
-        <div v-show="(taskCount > 0)" id="activity-indicator" data-bs-toggle="tooltip" data-bs-placement="bottom" :data-bs-title="activityTooltip"><i class="bi bi-activity activity-animation" ></i></div>
+        <div v-show="(taskCount > 0)" id="activity-indicator" data-bs-toggle="tooltip" data-bs-placement="bottom"
+          :data-bs-title="activityTooltip"><i class="bi bi-activity activity-animation"></i></div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar"
           aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -12,7 +13,8 @@
     </nav>
     <div class="container-fluid px-0 flex-grow-1 overflow-hidden">
       <div class="d-flex h-100 overflow-hidden">
-        <div class="collapse collapse-horizontal flex-shrink-1 border-end" id="sidebar" :class="{'show': defaultShowMenu}">
+        <div class="collapse collapse-horizontal flex-shrink-1 border-end" id="sidebar"
+          :class="{ 'show': defaultShowMenu }">
           <ul class="nav nav-pills nav-fill flex-column mb-auto text-center h-100">
             <li class="nav-item">
               <router-link :to="{ name: 'Home' }" class="nav-link text-reset py-3 border-bottom" active-class="active">
@@ -21,19 +23,22 @@
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'PhotoList' }" class="nav-link text-reset py-3 border-bottom" active-class="active">
+              <router-link :to="{ name: 'PhotoList' }" class="nav-link text-reset py-3 border-bottom"
+                active-class="active">
                 <i class="bi bi-images"></i>
                 <div>Photos</div>
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'AlbumList' }" class="nav-link text-reset py-3 border-bottom" active-class="active">
+              <router-link :to="{ name: 'AlbumList' }" class="nav-link text-reset py-3 border-bottom"
+                active-class="active">
                 <i class="bi bi-journal-album"></i>
                 <div>Albums</div>
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'Upload' }" class="nav-link text-reset py-3 border-bottom" active-class="active">
+              <router-link :to="{ name: 'Upload' }" class="nav-link text-reset py-3 border-bottom"
+                active-class="active">
                 <i class="bi bi-upload"></i>
                 <div>Upload</div>
               </router-link>
@@ -81,13 +86,29 @@ onMounted(() => {
 
 const defaultShowMenu = window.innerWidth > 576;
 
-const { result: taskQueue } = useQuery(graphql(`
+const { result: taskQueue, subscribeToMore: taskSub } = useQuery(graphql(`
   query taskQueue{
     taskQueue
   }
 `), null, {
   pollInterval: 1000 * 60 // TODO: Make this a subscription
 });
+
+taskSub({
+  document: graphql(`
+    subscription taskQueueSub {
+      taskQueueUpdated
+    }`,
+  ),
+  updateQuery: (prev, { subscriptionData }) => {
+    if (!subscriptionData.data) {
+      return prev;
+    }
+    return {
+      taskQueue: subscriptionData.data.taskQueueUpdated
+    };
+  }
+})
 
 const taskCount = computed(() => taskQueue.value?.taskQueue ?? 0)
 
@@ -106,13 +127,14 @@ watch(activityTooltip, (newVal) => {
 
 <style scoped>
 .nav-item {
-  flex-grow:0;
+  flex-grow: 0;
 }
 
 .active {
   color: white !important;
   border-radius: 0;
 }
+
 .activity-animation {
   font-size: 1.5rem;
   background: linear-gradient(90deg,

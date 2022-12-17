@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for photo in Photo.objects.all():
-            process_photo(photo)
+            process_photo.delay(photo.pk)
         self.stdout.write(
             self.style.SUCCESS(
                 "Successfully queued %s photos for reprocessing" % Photo.objects.count()

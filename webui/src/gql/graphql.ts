@@ -130,6 +130,11 @@ export type QueryPhotosArgs = {
   pagination?: InputMaybe<OffsetPaginationInput>;
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  taskQueueUpdated: Scalars['Int'];
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
@@ -145,6 +150,11 @@ export type TaskQueueQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TaskQueueQuery = { __typename?: 'Query', taskQueue: number };
+
+export type TaskQueueSubSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TaskQueueSubSubscription = { __typename?: 'Subscription', taskQueueUpdated: number };
 
 export type GetPhotosQueryVariables = Exact<{
   yearMonth: Scalars['String'];
@@ -201,6 +211,7 @@ export type UserQueryQuery = { __typename?: 'Query', me?: { __typename?: 'User',
 
 
 export const TaskQueueDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"taskQueue"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taskQueue"}}]}}]} as unknown as DocumentNode<TaskQueueQuery, TaskQueueQueryVariables>;
+export const TaskQueueSubDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"taskQueueSub"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taskQueueUpdated"}}]}}]} as unknown as DocumentNode<TaskQueueSubSubscription, TaskQueueSubSubscriptionVariables>;
 export const GetPhotosDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getPhotos"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"yearMonth"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"photos"},"name":{"kind":"Name","value":"getPhotosByDateGroup"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"yearMonth"},"value":{"kind":"Variable","name":{"kind":"Name","value":"yearMonth"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"Field","name":{"kind":"Name","value":"blurhash"}},{"kind":"Field","name":{"kind":"Name","value":"imageUrl"}}]}}]}}]} as unknown as DocumentNode<GetPhotosQuery, GetPhotosQueryVariables>;
 export const UploadPhotoDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"uploadPhoto"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"title"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"file"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Upload"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uploadPhoto"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"title"},"value":{"kind":"Variable","name":{"kind":"Name","value":"title"}}},{"kind":"Argument","name":{"kind":"Name","value":"image"},"value":{"kind":"Variable","name":{"kind":"Name","value":"file"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UploadPhotoMutation, UploadPhotoMutationVariables>;
 export const GetDateGroupsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getDateGroups"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"photoDateGroups"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"yearMonth"}},{"kind":"Field","name":{"kind":"Name","value":"totalPhotos"}}]}}]}}]} as unknown as DocumentNode<GetDateGroupsQuery, GetDateGroupsQueryVariables>;

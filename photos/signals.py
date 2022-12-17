@@ -17,4 +17,4 @@ def photo_post_save(sender, instance, created, **kwargs) -> None:
     if created:
         if instance.creator:
             assign_perm("photos.view_photo", instance.creator, instance)
-        process_photo(instance)
+        process_photo.delay(instance.pk)

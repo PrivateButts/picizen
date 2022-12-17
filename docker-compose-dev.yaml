@@ -7,12 +7,14 @@ services:
       POSTGRES_USER: user
       POSTGRES_DB: db
     volumes:
-      - ./db:/var/lib/postgresql/data
-  
+      - db:/var/lib/postgresql/data
+
   redis:
     image: redis
     restart: unless-stopped
-  
+    ports:
+      - 6379:6379
+
   nginx:
     build:
       context: ./docker
@@ -24,7 +26,7 @@ services:
     volumes:
       - ./mediafiles:/var/www/protected
       - ./staticfiles:/var/www/static
-  
+
   web:
     build:
       context: .
@@ -37,6 +39,7 @@ services:
     expose:
       - "8000:8000"
     ports:
+      - "8000:8000"
       - "8001:8001"
     volumes:
       - .:/usr/src/app
@@ -45,10 +48,9 @@ services:
     environment:
       - DATABASE_URL=postgres://user:password@db:5432/db
       - REDIS_URL=redis://redis:6379/0
-      - HUEY_IMMEDIATE=False
-      - CSRF_TRUSTED_ORIGINS=http://localhost:1337
+      - CSRF_TRUSTED_ORIGINS=http://localhost:1337,http://localhost:8000,ws://localhost:1337,ws://localhost:8000
     command: python manage.py runserver 0.0.0.0:8000
-  
+
   task-runner:
     build:
       context: .
@@ -59,7 +61,7 @@ services:
       - db
       - redis
     ports:
-      - "8002:8001"
+      - "6900:6900"
     volumes:
       - .:/usr/src/app
     env_file:
@@ -67,14 +69,19 @@ services:
     environment:
       - DATABASE_URL=postgres://user:password@db:5432/db
       - REDIS_URL=redis://redis:6379/0
-      - HUEY_IMMEDIATE=False
-    command: python manage.py run_huey
-  
+      - GEVENT_SUPPORT=True
+    command: watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- python -m debugpy --listen 0.0.0.0:6900 -m celery -A picizen worker -l INFO
+
   webui-vite:
     build:
       context: .
       dockerfile: docker/webui
     ports:
       - "3000:3000"
+    environment:
+      - VITE_PUBLIC_URL=http://localhost:1337/
     volumes:
       - ./webui:/usr/src/app
+
+volumes:
+  db:

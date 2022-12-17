@@ -14,6 +14,7 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  */
 const documents = {
     "\n  query taskQueue{\n    taskQueue\n  }\n": types.TaskQueueDocument,
+    "\n    subscription taskQueueSub {\n      taskQueueUpdated\n    }": types.TaskQueueSubDocument,
     "\nquery getPhotos($yearMonth: String!) {\n    photos: getPhotosByDateGroup(yearMonth: $yearMonth){\n        id\n        title\n        image{\n            url\n            width\n            height\n        }\n        blurhash\n        imageUrl\n    }\n}": types.GetPhotosDocument,
     "\n                    mutation uploadPhoto($title: String!, $file: Upload!){\n                        uploadPhoto(title: $title, image: $file){\n                            id\n                        }\n                    }\n                ": types.UploadPhotoDocument,
     "\n    query getDateGroups {\n        photoDateGroups{\n            yearMonth\n            totalPhotos\n        }\n    }\n": types.GetDateGroupsDocument,
@@ -28,6 +29,10 @@ const documents = {
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query taskQueue{\n    taskQueue\n  }\n"): (typeof documents)["\n  query taskQueue{\n    taskQueue\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    subscription taskQueueSub {\n      taskQueueUpdated\n    }"): (typeof documents)["\n    subscription taskQueueSub {\n      taskQueueUpdated\n    }"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
