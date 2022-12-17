@@ -1,22 +1,23 @@
 import channels.layers
+import redis
 
 import strawberry
 
 from accounts.gql import Mutation as AccountMutation, Query as AccountQuery
-from celery import current_app
+from django.conf import settings
+from django.core.cache import cache
 from photos.gql import Mutation as PhotoMutation, Query as PhotoQuery
 
 
 channel_layer = channels.layers.get_channel_layer()
+REDIS_INSTANCE = redis.Redis().from_url(settings.REDIS_URL)
 
 
 def resolve_task_queue():
-    print("resolve task queue")
-    return current_app.pool.connection.default_channel.client.llen("celery")
+    return REDIS_INSTANCE.hlen("task_queue")
 
 
 async def updateTaskQueue(remaining: int):
-    print("updating task queue")
     await channel_layer.group_send("taskQueue_updates", {"remaining": remaining})
 
 

@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
+from PIL import Image
 
 from photos.models import Album, Photo, Tag
-from PIL import Image
 
 
 class PhotoModelTestCase(TestCase):

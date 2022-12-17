@@ -94,6 +94,15 @@ DATABASES = {
     "default": env.db(),
 }
 
+REDIS_URL = env.str("REDIS_URL")
+# Cache
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": REDIS_URL,
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -168,11 +177,11 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.pubsub.RedisPubSubChannelLayer",
         "CONFIG": {
-            "hosts": [env.str("REDIS_URL")],
+            "hosts": [REDIS_URL],
         },
     },
 }
 
 
 # Celery
-CELERY_BROKER_URL = env.str("REDIS_URL")
+CELERY_BROKER_URL = REDIS_URL

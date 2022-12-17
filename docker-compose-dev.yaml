@@ -61,7 +61,7 @@ services:
       - db
       - redis
     ports:
-      - "8002:8001"
+      - "6900:6900"
     volumes:
       - .:/usr/src/app
     env_file:
@@ -70,7 +70,7 @@ services:
       - DATABASE_URL=postgres://user:password@db:5432/db
       - REDIS_URL=redis://redis:6379/0
       - GEVENT_SUPPORT=True
-    command: watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- celery -A picizen worker -l INFO
+    command: watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- python -m debugpy --listen 0.0.0.0:6900 -m celery -A picizen worker -l INFO
 
   webui-vite:
     build:

@@ -43,7 +43,7 @@
 					"remoteRoot": "/usr/src/app"
 				}
 			],
-			"port": 8002,
+			"port": 6900,
 			"host": "127.0.0.1",
 		},
 	]

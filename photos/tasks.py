@@ -1,7 +1,8 @@
 import logging
 from typing import Optional
 
-import blurhash, exifread
+import blurhash
+import exifread
 from celery import shared_task
 from django.utils import timezone as tz
 from exifread.utils import get_gps_coords

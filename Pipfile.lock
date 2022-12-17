@@ -915,10 +915,10 @@
         },
         "zope.event": {
             "hashes": [
-                "sha256:4ab47faac13163ca3c5d6d8a5595212e14770322e95c338d955e3688ba19082a",
-                "sha256:8cca6074a2bbca140d32704694e74098d5621f2c75ea6e3a9458240a3b5382a9"
+                "sha256:73d9e3ef750cca14816a9c322c7250b0d7c9dbc337df5d1b807ff8d3d0b9e97c",
+                "sha256:81d98813046fc86cc4136e3698fee628a3282f9c320db18658c21749235fce80"
             ],
-            "version": "==4.5.1"
+            "version": "==4.6"
         },
         "zope.interface": {
             "hashes": [
