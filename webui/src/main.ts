@@ -12,9 +12,6 @@ import router from './router'
 import { apolloProvider, apolloClient } from './helpers/apollo'
 
 
-
-
-
 const pinia = createPinia()
 
 const app = createApp({
