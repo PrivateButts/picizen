@@ -58,7 +58,17 @@ def extract_exif(pid: int):
     photo.lens_make = _parse_tag("EXIF LensMake", tags)
     photo.lens_model = _parse_tag("EXIF LensModel", tags)
 
-    photo.save()
+    photo.save(
+        update_fields=[
+            "gps_lat",
+            "gps_lon",
+            "date_taken",
+            "camera_make",
+            "camera_model",
+            "lens_make",
+            "lens_model",
+        ]
+    )
 
 
 @shared_task()
@@ -70,7 +80,7 @@ def generate_blurhash(pid: int):
     """
     photo = Photo.objects.get(pk=pid)
     photo.blurhash = blurhash.encode(photo.image, x_components=4, y_components=3)
-    photo.save()
+    photo.save(update_fields=["blurhash"])
 
 
 @shared_task()

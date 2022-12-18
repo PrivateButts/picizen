@@ -16,7 +16,8 @@ const routes = [
     {
         path: '/photos/:id/',
         name: 'PhotoDetail',
-        component: () => import('./pages/PhotoDetail.vue')
+        component: () => import('./pages/PhotoDetail.vue'),
+        props: true
     },
     {
         path: '/albums/',
@@ -42,16 +43,16 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
-    if(to.name === 'Login'){
+    if (to.name === 'Login') {
         return true
     }
 
     const userStore = useUserStore()
-    if(!userStore.loaded){
+    if (!userStore.loaded) {
         console.log('checking user status')
         await userStore.checkUserStatus()
     }
-    if(!userStore.isAuthenticated){
+    if (!userStore.isAuthenticated) {
         return { name: 'Login' }
     }
     return true

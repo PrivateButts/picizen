@@ -3,8 +3,11 @@
         <!-- <div class="col" v-for="photo in photos">
             </div> -->
         <div v-for="layout in photoLayout" :style="layout.style" class="photo-grid-item">
-            <PhotoCard :photo="layout.photo" @click="$router.push(`/photos/${layout.photo.id}/`)">{{ layout.photo.title
-            }}</PhotoCard>
+            <PhotoCard :photo="layout.photo"
+                @click="$router.push({ name: 'PhotoDetail', params: { id: layout.photo.id }, state: { slideList: photoIds } })">
+                {{
+        layout.photo.title
+                }}</PhotoCard>
         </div>
     </div>
 </template>
@@ -46,7 +49,7 @@
 import { useQuery } from '@vue/apollo-composable';
 import { graphql } from '../gql';
 import PhotoCard from '../components/PhotoCard.vue';
-import { Photo, PhotoDateGroup } from '../gql/graphql';
+import { GetPhotosQuery, Photo, PhotoDateGroup } from '../gql/graphql';
 import { computed, reactive } from '@vue/reactivity';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 
@@ -69,12 +72,21 @@ query getPhotos($yearMonth: String!) {
         blurhash
         imageUrl
     }
+
+    photoIds: photos{
+        id
+    }
 }`), () => ({
     yearMonth: props.PhotoDateGroup.yearMonth
 }))
 
 const photos = computed(() => {
     return result.value?.photos as [Photo] ?? []
+})
+
+const photoIds = computed(() => {
+    if (!result.value) return []
+    return result.value.photoIds.map((photo): string => photo.id) as [string] ?? []
 })
 
 const photoLayout = computed(() => {

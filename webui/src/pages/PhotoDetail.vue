@@ -70,6 +70,10 @@
                     </div>
                 </div>
             </div>
+            <button @click="$router.push(previousPage as RouteLocationRaw)"
+                :disabled="previousPage == null">Previous</button>
+            <button @click="$router.push(nextPage as RouteLocationRaw)" :disabled="nextPage == null">Next</button>
+
         </div>
 
         <div>
@@ -100,12 +104,13 @@
 
 <script setup lang="ts">
 import { useQuery, useMutation } from '@vue/apollo-composable';
-import { nextTick, ref, watch, computed } from 'vue';
+import { nextTick, ref, watch, computed, onMounted, onUnmounted } from 'vue';
 import { graphql } from '../gql';
-import { useRoute } from 'vue-router';
+import { RouteLocationRaw, useRoute, useRouter } from 'vue-router';
 import { PhotoQuery } from '../gql/graphql';
 
 const $route = useRoute()
+const $router = useRouter()
 
 const photoTitle = ref('');
 const photo = ref<PhotoQuery['photo'] | null>(null);
@@ -117,6 +122,69 @@ const imageOffsetX = ref(0);
 const imageOffsetY = ref(0);
 const panningImage = ref(false);
 const sidebarCollapsed = ref(true);
+
+
+const props = defineProps<{
+    id: string;
+}>();
+
+const slideList = computed(() => {
+    if (!history.state.slideList) {
+        return null;
+    }
+    return history.state.slideList;
+})
+
+const previousPage = computed(() => {
+    if (!slideList.value) {
+        return null;
+    }
+    const index = slideList.value.indexOf(props.id);
+    if (index === -1) {
+        return null;
+    }
+    let prev;
+    if (index === 0) {
+        prev = slideList.value[slideList.value.length - 1];
+    } else {
+        prev = slideList.value[index - 1];
+    }
+    return { name: 'PhotoDetail', params: { id: prev }, state: { slideList: slideList.value } }
+})
+
+const nextPage = computed(() => {
+    if (!slideList.value) {
+        return null;
+    }
+    const index = slideList.value.indexOf(props.id);
+    if (index === -1) {
+        return null;
+    }
+    let next;
+    if (index === slideList.value.length - 1) {
+        next = slideList.value[0];
+    } else {
+        next = slideList.value[index + 1];
+    }
+    return { name: 'PhotoDetail', params: { id: next }, state: { slideList: slideList.value } }
+})
+
+
+function handleNavKeys(e) {
+    if (e.key === 'ArrowLeft') {
+        $router.push(previousPage.value as RouteLocationRaw);
+    } else if (e.key === 'ArrowRight') {
+        $router.push(nextPage.value as RouteLocationRaw);
+    }
+}
+
+onMounted(() => {
+    window.addEventListener('keydown', handleNavKeys)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleNavKeys)
+})
 
 
 

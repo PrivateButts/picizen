@@ -15,7 +15,7 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
 const documents = {
     "\n  query taskQueue{\n    taskQueue\n  }\n": types.TaskQueueDocument,
     "\n    subscription taskQueueSub {\n      taskQueueUpdated\n    }": types.TaskQueueSubDocument,
-    "\nquery getPhotos($yearMonth: String!) {\n    photos: getPhotosByDateGroup(yearMonth: $yearMonth){\n        id\n        title\n        image{\n            url\n            width\n            height\n        }\n        blurhash\n        imageUrl\n    }\n}": types.GetPhotosDocument,
+    "\nquery getPhotos($yearMonth: String!) {\n    photos: getPhotosByDateGroup(yearMonth: $yearMonth){\n        id\n        title\n        image{\n            url\n            width\n            height\n        }\n        blurhash\n        imageUrl\n    }\n\n    photoIds: photos{\n        id\n    }\n}": types.GetPhotosDocument,
     "\n                    mutation uploadPhoto($title: String!, $file: Upload!){\n                        uploadPhoto(title: $title, image: $file){\n                            id\n                        }\n                    }\n                ": types.UploadPhotoDocument,
     "\n    query getDateGroups {\n        photoDateGroups{\n            yearMonth\n            totalPhotos\n        }\n    }\n": types.GetDateGroupsDocument,
     "\n    query photo($id: ID!) {\n        photo(pk: $id) {\n            id\n            title\n            image {\n                width\n                height\n            }\n            imageUrl\n\n            creator {\n                username\n            }\n            dateTaken\n            gpsLat\n            gpsLon\n            cameraMake\n            cameraModel\n            lensMake\n            lensModel\n        }\n    }\n": types.PhotoDocument,
@@ -36,7 +36,7 @@ export function graphql(source: "\n    subscription taskQueueSub {\n      taskQu
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\nquery getPhotos($yearMonth: String!) {\n    photos: getPhotosByDateGroup(yearMonth: $yearMonth){\n        id\n        title\n        image{\n            url\n            width\n            height\n        }\n        blurhash\n        imageUrl\n    }\n}"): (typeof documents)["\nquery getPhotos($yearMonth: String!) {\n    photos: getPhotosByDateGroup(yearMonth: $yearMonth){\n        id\n        title\n        image{\n            url\n            width\n            height\n        }\n        blurhash\n        imageUrl\n    }\n}"];
+export function graphql(source: "\nquery getPhotos($yearMonth: String!) {\n    photos: getPhotosByDateGroup(yearMonth: $yearMonth){\n        id\n        title\n        image{\n            url\n            width\n            height\n        }\n        blurhash\n        imageUrl\n    }\n\n    photoIds: photos{\n        id\n    }\n}"): (typeof documents)["\nquery getPhotos($yearMonth: String!) {\n    photos: getPhotosByDateGroup(yearMonth: $yearMonth){\n        id\n        title\n        image{\n            url\n            width\n            height\n        }\n        blurhash\n        imageUrl\n    }\n\n    photoIds: photos{\n        id\n    }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
