@@ -65,7 +65,7 @@ class PhotoTasksTestCase(TestCase):
                 ),
             )
 
-        extract_exif(p)
+        extract_exif(p.id)
         p.refresh_from_db()
 
         self.assertEqual(p.gps_lat, Decimal("43.467157"))
@@ -89,6 +89,6 @@ class PhotoTasksTestCase(TestCase):
                     content_type="image/jpeg",
                 ),
             )
-        generate_blurhash(p)
+        generate_blurhash(p.id)
         p.refresh_from_db()
         self.assertEqual(p.blurhash, "LOF5$~?cpJt7_N-=x^t7S%jbt6oz")
