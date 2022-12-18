@@ -170,7 +170,7 @@ const nextPage = computed(() => {
 })
 
 
-function handleNavKeys(e) {
+function handleNavKeys(e: KeyboardEvent) {
     if (e.key === 'ArrowLeft') {
         $router.push(previousPage.value as RouteLocationRaw);
     } else if (e.key === 'ArrowRight') {

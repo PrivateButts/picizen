@@ -1,5 +1,5 @@
 # schema.py
-from typing import List
+from typing import Dict, List
 
 import strawberry
 from accounts.gql import User as UserType
@@ -36,6 +36,7 @@ class Photo:
 class PhotoDateGroup:
     year_month: str
     total_photos: int
+    photos: List[Photo]
 
 
 def get_photo_date_groups() -> List[PhotoDateGroup]:
@@ -43,28 +44,24 @@ def get_photo_date_groups() -> List[PhotoDateGroup]:
     photos = models.Photo.objects.all()
 
     # get unknown count
-    unknownCount = photos.filter(date_taken__isnull=True).count()
-    groups.append(PhotoDateGroup(year_month="Unknown", total_photos=unknownCount))
+    unknowns = photos.filter(date_taken__isnull=True)
+    groups.append(
+        PhotoDateGroup(
+            year_month="Unknown", total_photos=unknowns.count(), photos=unknowns
+        )
+    )
 
     # get known count
     for dtRange in photos.datetimes("date_taken", kind="month", order="DESC"):
-        count = photos.filter(
+        p = photos.filter(
             date_taken__year=dtRange.year, date_taken__month=dtRange.month
-        ).count()
+        )
         groups.append(
-            PhotoDateGroup(year_month=dtRange.strftime("%Y-%m"), total_photos=count)
+            PhotoDateGroup(
+                year_month=dtRange.strftime("%Y-%m"), total_photos=p.count(), photos=p
+            )
         )
     return groups
-
-
-def get_photos_by_date_group(year_month: str) -> List[Photo]:
-    if year_month == "Unknown":
-        return models.Photo.objects.filter(date_taken__isnull=True)
-    else:
-        year, month = year_month.split("-")
-        return models.Photo.objects.filter(
-            date_taken__year=year, date_taken__month=month
-        )
 
 
 @strawberry.django.type(models.Album)
@@ -75,6 +72,7 @@ class Album:
     creator: UserType
     created_at: auto
     updated_at: auto
+    photos: List[Photo]
 
 
 @strawberry.django.type(models.Tag)
@@ -92,9 +90,6 @@ class Query:
     photo: Photo = strawberry.django.field()
     photos: List[Photo] = strawberry.django.field(pagination=True)
 
-    getPhotosByDateGroup: List[Photo] = strawberry.django.field(
-        resolver=get_photos_by_date_group
-    )
     photoDateGroups: List[PhotoDateGroup] = strawberry.django.field(
         resolver=get_photo_date_groups
     )

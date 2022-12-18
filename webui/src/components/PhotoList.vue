@@ -46,47 +46,23 @@
 </style>
 
 <script setup lang="ts">
-import { useQuery } from '@vue/apollo-composable';
-import { graphql } from '../gql';
 import PhotoCard from '../components/PhotoCard.vue';
-import { GetPhotosQuery, Photo, PhotoDateGroup } from '../gql/graphql';
+import { Photo } from '../gql/graphql';
 import { computed, reactive } from '@vue/reactivity';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 
 const listContainer = ref<HTMLElement | null>(null)
 
 const props = defineProps<{
-    PhotoDateGroup: PhotoDateGroup
+    Photos: Photo[]
 }>()
 
-const { result, loading, error } = useQuery(graphql(`
-query getPhotos($yearMonth: String!) {
-    photos: getPhotosByDateGroup(yearMonth: $yearMonth){
-        id
-        title
-        image{
-            url
-            width
-            height
-        }
-        blurhash
-        imageUrl
-    }
-
-    photoIds: photos{
-        id
-    }
-}`), () => ({
-    yearMonth: props.PhotoDateGroup.yearMonth
-}))
-
 const photos = computed(() => {
-    return result.value?.photos as [Photo] ?? []
+    return props.Photos as Photo[] ?? []
 })
 
 const photoIds = computed(() => {
-    if (!result.value) return []
-    return result.value.photoIds.map((photo): string => photo.id) as [string] ?? []
+    return photos.value.map((photo: Photo): string => photo.id) as [string] ?? []
 })
 
 const photoLayout = computed(() => {
