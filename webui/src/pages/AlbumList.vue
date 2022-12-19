@@ -1,17 +1,21 @@
 <template>
-    <h1>Album List</h1>
-    <router-link :to="{
-        name: 'AlbumDetail', params: { id: album.id }
-    }" v-for="album in albums">
-        <h2>{{ album.title }}</h2>
-        <p>{{ album.description }}</p>
-    </router-link>
+    <div class="container">
+        <h1>Album List</h1>
+        <div class="row">
+            <div v-for="album in albums" class="col">
+                <AlbumCard :album="album" @click="$router.push({
+                    name: 'AlbumDetail', params: { id: album.id }
+                })" style="cursor:pointer">{{ album.title }}</AlbumCard>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useQuery } from '@vue/apollo-composable'
 import { graphql } from '../gql';
+import AlbumCard from '../components/AlbumCard.vue';
 
 const { result: albumsQuery } = useQuery(graphql(`
     query getAlbums {
