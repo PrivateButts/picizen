@@ -3,8 +3,7 @@
         <!-- <div class="col" v-for="photo in photos">
             </div> -->
         <div v-for="layout in photoLayout" :style="layout.style" class="photo-grid-item">
-            <PhotoCard :photo="layout.photo"
-                @click="$router.push({ name: 'PhotoDetail', params: { id: layout.photo.id }, state: { slideList: photoIds } })">
+            <PhotoCard :photo="layout.photo" @click="$router.push(detailLink(layout))">
                 {{
         layout.photo.title
                 }}</PhotoCard>
@@ -50,11 +49,16 @@ import PhotoCard from '../components/PhotoCard.vue';
 import { Photo } from '../gql/graphql';
 import { computed, reactive } from '@vue/reactivity';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
+import { RouteLocationRaw } from 'vue-router';
 
 const listContainer = ref<HTMLElement | null>(null)
 
 const props = defineProps<{
-    Photos: Photo[]
+    Photos: Photo[],
+    linkOverride?: {
+        name?: string
+        params?: Record<string, string>
+    }
 }>()
 
 const photos = computed(() => {
@@ -73,4 +77,22 @@ const photoLayout = computed(() => {
         }
     })
 })
+
+function detailLink(layout: any) {
+    let link = { name: 'PhotoDetail', params: { id: layout.photo.id }, state: { slideList: photoIds.value } }
+
+    if (props.linkOverride) {
+        if (props.linkOverride.name) {
+            link.name = props.linkOverride.name
+        }
+        if (props.linkOverride.params) {
+            link.params = {
+                ...props.linkOverride.params,
+                ...link.params
+            }
+        }
+    }
+
+    return link
+}
 </script>

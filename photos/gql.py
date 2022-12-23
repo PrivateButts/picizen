@@ -1,5 +1,5 @@
 # schema.py
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import strawberry
 from accounts.gql import User as UserType
@@ -73,6 +73,11 @@ class Album:
     created_at: auto
     updated_at: auto
     photos: List[Photo]
+    photo_count: int
+
+    @strawberry.django.field
+    def cover_photo(self) -> Optional[Photo]:
+        return self.cover_photo
 
 
 @strawberry.django.type(models.Tag)

@@ -1,4 +1,5 @@
 <template>
+    <Breadcrumbs :crumbs="crumbs"></Breadcrumbs>
     <div v-if="photo" class="d-flex h-100 flex-column">
         <div class="mt-n2 flex-grow-1 d-flex flex-column justify-content-between">
             <div class="ps-3 pt-3 bg-light w-100 border-bottom border d-flex">
@@ -108,6 +109,7 @@ import { nextTick, ref, watch, computed, onMounted, onUnmounted } from 'vue';
 import { graphql } from '../gql';
 import { RouteLocationRaw, useRoute, useRouter } from 'vue-router';
 import { PhotoQuery } from '../gql/graphql';
+import Breadcrumbs from '../components/Breadcrumbs.vue';
 
 const $route = useRoute()
 const $router = useRouter()
@@ -149,7 +151,7 @@ const previousPage = computed(() => {
     } else {
         prev = slideList.value[index - 1];
     }
-    return { name: 'PhotoDetail', params: { id: prev }, state: { slideList: slideList.value } }
+    return { name: $route.name, params: { id: prev }, state: { slideList: slideList.value } }
 })
 
 const nextPage = computed(() => {
@@ -166,7 +168,7 @@ const nextPage = computed(() => {
     } else {
         next = slideList.value[index + 1];
     }
-    return { name: 'PhotoDetail', params: { id: next }, state: { slideList: slideList.value } }
+    return { name: $route.name, params: { id: next }, state: { slideList: slideList.value } }
 })
 
 
@@ -289,4 +291,16 @@ function offsetImage(event: MouseEvent) {
     imageOffsetX.value += event.movementX / imageScale.value
     imageOffsetY.value += event.movementY / imageScale.value
 }
+
+const crumbs = computed(() => {
+    let crumbs = []
+    if ($route.name == 'AlbumPhotoDetail') {
+        crumbs.push({ name: 'AlbumList', label: 'Albums' })
+        crumbs.push({ name: 'AlbumDetail', params: { id: $route.params.aid }, label: 'Album' })
+    } else if ($route.name == 'PhotoDetail') {
+        crumbs.push({ name: 'PhotoList', label: 'Photos' })
+    }
+    crumbs.push({ name: $route.name, label: photo.value ? photo.value.title : "Loading...", active: true })
+    return crumbs
+})
 </script>

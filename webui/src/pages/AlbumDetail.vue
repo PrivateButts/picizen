@@ -1,8 +1,10 @@
 <template>
     <div v-if="album">
+        <Breadcrumbs :crumbs="crumbs"></Breadcrumbs>
         {{ album.title }}
         {{ album.description }}
-        <PhotoList :Photos="album.photos"></PhotoList>
+        <PhotoList :Photos="album.photos" :linkOverride="{ name: 'AlbumPhotoDetail', params: { aid: props.id } }">
+        </PhotoList>
     </div>
 </template>
 
@@ -10,6 +12,7 @@
 import { useQuery } from '@vue/apollo-composable'
 import { computed } from 'vue';
 import { graphql } from '../gql'
+import Breadcrumbs from '../components/Breadcrumbs.vue';
 import PhotoList from '../components/PhotoList.vue';
 
 const props = defineProps<{
@@ -43,5 +46,18 @@ const album = computed(() => {
     return albumQuery.value.album;
 })
 
+const crumbs = computed(() => {
+    return [{
+        name: 'AlbumList',
+        label: 'Albums',
+    }, {
+        name: 'AlbumDetail',
+        label: album.value?.title,
+        params: {
+            id: props.id
+        },
+        active: true
+    }]
+});
 
 </script>

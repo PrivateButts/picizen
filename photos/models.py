@@ -1,3 +1,5 @@
+from typing import Optional
+
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
@@ -42,7 +44,15 @@ class Album(BaseModel):
 
     creator = models.ForeignKey(USER, on_delete=models.CASCADE)
 
-    def __str__(self):
+    @property
+    def cover_photo(self) -> Optional[Photo]:
+        return self.photos.first()
+
+    @property
+    def photo_count(self) -> int:
+        return self.photos.count()
+
+    def __str__(self) -> str:
         return self.title
 
 

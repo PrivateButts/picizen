@@ -31,6 +31,12 @@ const routes = [
         component: () => import('./pages/AlbumDetail.vue'),
     },
     {
+        path: '/albums/:aid/:id/',
+        name: 'AlbumPhotoDetail',
+        component: () => import('./pages/PhotoDetail.vue'),
+        props: true
+    },
+    {
         path: '/upload/',
         name: 'Upload',
         component: () => import('./components/Upload.vue')
