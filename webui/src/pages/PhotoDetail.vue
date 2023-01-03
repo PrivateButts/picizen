@@ -121,7 +121,7 @@
 import { useQuery, useMutation } from '@vue/apollo-composable';
 import { nextTick, ref, watch, computed, onMounted, onUnmounted } from 'vue';
 import { graphql } from '../gql';
-import { RouteLocationRaw, useRoute, useRouter } from 'vue-router';
+import { RouteLocationRaw, useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import { PhotoQuery } from '../gql/graphql';
 import Breadcrumbs from '../components/Breadcrumbs.vue';
 
@@ -202,6 +202,15 @@ onUnmounted(() => {
     window.removeEventListener('keydown', handleNavKeys)
 })
 
+onBeforeRouteUpdate((to, from) => {
+    if (to.params.id !== from.params.id) {
+        editing.value = false;
+        imageScale.value = 1;
+        imageOffsetX.value = 0;
+        imageOffsetY.value = 0;
+        panningImage.value = false;
+    }
+})
 
 
 const { result: photoQuery } = useQuery(graphql(`
