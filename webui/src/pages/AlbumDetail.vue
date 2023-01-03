@@ -1,7 +1,6 @@
 <template>
-    <div v-if="album">
+    <div v-if="album" class="container">
         <Breadcrumbs :crumbs="crumbs"></Breadcrumbs>
-        {{ album.title }}
         {{ album.description }}
         <PhotoList :Photos="album.photos" :linkOverride="{ name: 'AlbumPhotoDetail', params: { aid: props.id } }">
         </PhotoList>

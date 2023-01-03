@@ -1,8 +1,7 @@
 <template>
-    <Breadcrumbs :crumbs="crumbs"></Breadcrumbs>
     <div v-if="photo" class="d-flex h-100 flex-column">
-        <div class="mt-n2 flex-grow-1 d-flex flex-column justify-content-between">
-            <div class="ps-3 pt-3 bg-light w-100 border-bottom border d-flex">
+        <div class="mt-n2 flex-grow-1 d-flex flex-column justify-content-between position-relative">
+            <div class="ps-3 pt-3 bg-light w-100 border-bottom border d-flex z-2">
                 <div class="flex-grow-1">
                     <div v-show="editing">
                         <input ref="titleInput" type="text" class="form-control" v-model="photoTitle"
@@ -10,7 +9,7 @@
                     </div>
                     <div v-if="!editing" @click="editTitle">
                         <h3 class="">
-                            {{ photoTitle }}
+                            <Breadcrumbs :crumbs="crumbs"></Breadcrumbs>
                         </h3>
                     </div>
                 </div>
@@ -30,7 +29,7 @@
                     }" />
                 </div>
                 <div class="position-absolute top-0 bottom-0 end-0">
-                    <div id="photoSidebar" class="photo-sidebar bg-light border-start border-bottom collapse p-3">
+                    <div id="photoSidebar" class="photo-sidebar bg-light border-start border-bottom collapse p-3 z-2">
                         <div class="mb-3" v-if="photo.creator">
                             <span class="fw-bold d-block">Creator</span>
                             <span class="">{{ photo.creator.username }}</span>
@@ -71,9 +70,16 @@
                     </div>
                 </div>
             </div>
-            <button @click="$router.push(previousPage as RouteLocationRaw)"
-                :disabled="previousPage == null">Previous</button>
-            <button @click="$router.push(nextPage as RouteLocationRaw)" :disabled="nextPage == null">Next</button>
+            <div class="position-absolute top-0 bottom-0 start-0 d-flex justify-content-center z-1 bg-white"
+                style="--bs-bg-opacity: .2;">
+                <button class="btn" @click="$router.push(previousPage as RouteLocationRaw)"
+                    :disabled="previousPage == null"><i class="bi bi-chevron-left"></i></button>
+            </div>
+            <div class="position-absolute top-0 bottom-0 end-0 d-flex justify-content-center z-1 bg-white"
+                style="--bs-bg-opacity: .2;">
+                <button class="btn" @click="$router.push(nextPage as RouteLocationRaw)" :disabled="nextPage == null"><i
+                        class="bi bi-chevron-right"></i></button>
+            </div>
 
         </div>
 
@@ -100,6 +106,14 @@
 
 .photo-sidebar {
     width: 300px;
+}
+
+.z-2 {
+    z-index: 2;
+}
+
+.z-1 {
+    z-index: 1;
 }
 </style>
 

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1>Album List</h1>
+        <Breadcrumbs :crumbs="crumbs"></Breadcrumbs>
         <div class="row row-cols-4 g-4">
             <div v-for="album in albums" class="col">
                 <AlbumCard :album="album" @click="$router.push({
@@ -15,6 +15,7 @@
 import { computed } from 'vue'
 import { useQuery } from '@vue/apollo-composable'
 import { graphql } from '../gql';
+import Breadcrumbs from '../components/Breadcrumbs.vue';
 import AlbumCard from '../components/AlbumCard.vue';
 
 const { result: albumsQuery } = useQuery(graphql(`
@@ -46,6 +47,14 @@ const albums = computed(() => {
     if (albumsQuery.value == null) return [];
     return albumsQuery.value.albums;
 })
+
+const crumbs = computed(() => {
+    return [{
+        name: 'AlbumList',
+        label: 'Albums',
+        active: true
+    }]
+});
 </script>
 
 <style scoped>
