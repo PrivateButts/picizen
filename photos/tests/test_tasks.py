@@ -70,9 +70,7 @@ class PhotoTasksTestCase(TestCase):
 
         self.assertEqual(p.gps_lat, Decimal("43.467157"))
         self.assertEqual(p.gps_lon, Decimal("11.885395"))
-        self.assertEqual(
-            p.date_taken, tz.make_aware(tz.datetime(2008, 10, 22, 16, 29, 49))
-        )
+        self.assertEqual(p.date_taken, tz.make_aware(tz.datetime(2008, 10, 22, 16, 29, 49)))
         self.assertEqual(p.camera_make, "NIKON")
         self.assertEqual(p.camera_model, "COOLPIX P6000")
         self.assertEqual(p.lens_make, "TEST LENS MAKE")

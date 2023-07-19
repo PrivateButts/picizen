@@ -1,5 +1,5 @@
 # schema.py
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 import strawberry
 from accounts.gql import User as UserType
@@ -46,20 +46,14 @@ def get_photo_date_groups() -> List[PhotoDateGroup]:
     # get unknown count
     unknowns = photos.filter(date_taken__isnull=True)
     groups.append(
-        PhotoDateGroup(
-            year_month="Unknown", total_photos=unknowns.count(), photos=unknowns
-        )
+        PhotoDateGroup(year_month="Unknown", total_photos=unknowns.count(), photos=unknowns)
     )
 
     # get known count
     for dtRange in photos.datetimes("date_taken", kind="month", order="DESC"):
-        p = photos.filter(
-            date_taken__year=dtRange.year, date_taken__month=dtRange.month
-        )
+        p = photos.filter(date_taken__year=dtRange.year, date_taken__month=dtRange.month)
         groups.append(
-            PhotoDateGroup(
-                year_month=dtRange.strftime("%Y-%m"), total_photos=p.count(), photos=p
-            )
+            PhotoDateGroup(year_month=dtRange.strftime("%Y-%m"), total_photos=p.count(), photos=p)
         )
     return groups
 
@@ -95,9 +89,7 @@ class Query:
     photo: Photo = strawberry.django.field()
     photos: List[Photo] = strawberry.django.field(pagination=True)
 
-    photoDateGroups: List[PhotoDateGroup] = strawberry.django.field(
-        resolver=get_photo_date_groups
-    )
+    photoDateGroups: List[PhotoDateGroup] = strawberry.django.field(resolver=get_photo_date_groups)
 
     album: Album = strawberry.django.field()
     albums: List[Album] = strawberry.django.field(pagination=True)

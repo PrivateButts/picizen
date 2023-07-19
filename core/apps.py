@@ -6,4 +6,4 @@ class CoreConfig(AppConfig):
     name = "core"
 
     def ready(self):  # pragma: no cover
-        from . import signals
+        pass

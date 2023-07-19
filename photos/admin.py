@@ -13,9 +13,8 @@ from .tasks import process_photo
 def assign_permission(self, request, queryset):
     selected = queryset.values_list("pk", flat=True)
     ct = ContentType.objects.get_for_model(queryset.model)
-    return HttpResponseRedirect(
-        f"{reverse('assign_perm')}?{urlencode({'ct': ct.pk, 'ids': ','.join(str(pk) for pk in selected)})}"
-    )
+    params = urlencode({"ct": ct.pk, "ids": ",".join(str(pk) for pk in selected)})
+    return HttpResponseRedirect(f"{reverse('assign_perm')}?{params}")
 
 
 @admin.register(Photo)

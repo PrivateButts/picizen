@@ -20,7 +20,5 @@ class PhotoSignalsTestCase(TestCase):
         p = PhotoFactory.create(
             creator=user,
         )
-        self.assertTrue(
-            p.creator.has_perm("photos.view_photo", p), msg="Permissions not set"
-        )
+        self.assertTrue(p.creator.has_perm("photos.view_photo", p), msg="Permissions not set")
         mock_process_photo.assert_called()

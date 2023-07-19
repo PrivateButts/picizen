@@ -6,4 +6,4 @@ class PhotosConfig(AppConfig):
     name = "photos"
 
     def ready(self):  # pragma: no cover
-        from . import signals
+        pass

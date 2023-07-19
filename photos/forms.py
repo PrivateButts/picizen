@@ -21,9 +21,7 @@ class AssignPermForm(forms.Form):
 
         users = self.cleaned_data["users"]
         ct = get_object_or_404(ContentType, pk=self.cleaned_data["content_type"])
-        items = get_list_or_404(
-            ct.model_class(), pk__in=self.cleaned_data["items"].split(",")
-        )
+        items = get_list_or_404(ct.model_class(), pk__in=self.cleaned_data["items"].split(","))
         for user in users:
             assign_perm(self.cleaned_data["permission"], user, items)
 

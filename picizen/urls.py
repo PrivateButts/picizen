@@ -13,10 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path
 
 from django.views.generic import TemplateView
 from photos.views import AssignPermView, serve_photo
@@ -30,8 +28,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("graphql/", GraphQLView.as_view(schema=schema, subscriptions_enabled=True)),
     path("photo/serve/<int:photo_id>/", serve_photo, name="serve_photo"),
-    path(
-        "<path:resource>", TemplateView.as_view(template_name="index.html"), name="home"
-    ),
+    path("<path:resource>", TemplateView.as_view(template_name="index.html"), name="home"),
     path("", TemplateView.as_view(template_name="index.html")),
 ]

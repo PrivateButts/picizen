@@ -27,7 +27,6 @@ class IsAuthenticated(BasePermission):
 
 @override_settings(DEBUG=True)
 class GraphQLTestCase(LiveServerTestCase):
-
     ENDPOINT = "/graphql/"
 
     @property

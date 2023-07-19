@@ -44,9 +44,7 @@ def extract_exif(pid: int):
     if "EXIF DateTimeOriginal" in tags and tags["EXIF DateTimeOriginal"].values.strip():
         try:
             photo.date_taken = tz.make_aware(
-                tz.datetime.strptime(
-                    tags["EXIF DateTimeOriginal"].values, "%Y:%m:%d %H:%M:%S"
-                )
+                tz.datetime.strptime(tags["EXIF DateTimeOriginal"].values, "%Y:%m:%d %H:%M:%S")
             )
         except ValueError:  # pragma: no cover
             logger.warning(

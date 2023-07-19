@@ -26,21 +26,11 @@ class FixPermissionsTestCase(TestCase):
 
     def test_fix_permissions(self):
         self.assertTrue(
-            all(
-                [
-                    not self.user.has_perm("photos.view_photo", photo)
-                    for photo in self.photos
-                ]
-            )
+            all([not self.user.has_perm("photos.view_photo", photo) for photo in self.photos])
         )
         fix_permissions.Command().handle()
         self.assertTrue(
-            all(
-                [
-                    self.user.has_perm("photos.view_photo", photo)
-                    for photo in self.photos
-                ]
-            )
+            all([self.user.has_perm("photos.view_photo", photo) for photo in self.photos])
         )
 
 

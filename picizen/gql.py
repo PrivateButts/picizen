@@ -5,7 +5,6 @@ import strawberry
 
 from accounts.gql import Mutation as AccountMutation, Query as AccountQuery
 from django.conf import settings
-from django.core.cache import cache
 from photos.gql import Mutation as PhotoMutation, Query as PhotoQuery
 
 

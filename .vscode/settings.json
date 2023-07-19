@@ -32,6 +32,6 @@
     },
     "coverage-gutters.coverageBaseDir": "coverage",
     "[python]": {
-        "editor.defaultFormatter": "omnilib.ufmt"
+        "editor.defaultFormatter": "ms-python.black-formatter"
     },
 }

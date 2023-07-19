@@ -47,9 +47,7 @@ class TaskAddedTestCase(TestCase):
                         mock_time.time.return_value = 1
                         mock_resolve.return_value = 1
                         task_added(task_id="task_id")
-                        mock_redis.hset.assert_called_once_with(
-                            "task_queue", "task_id", 1
-                        )
+                        mock_redis.hset.assert_called_once_with("task_queue", "task_id", 1)
                         mock_update.assert_called_once_with(1)
 
 
