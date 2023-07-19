@@ -16,6 +16,14 @@
                     </div>
                 </div>
 
+                <!-- Share Menu Collapse Button -->
+                <button class="btn btn-outline-info me-3 mb-3" @click="shareCollapsed = !shareCollapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#shareMenu" aria-expanded="false"
+                    aria-controls="shareMenu">
+                    <span v-if="shareCollapsed"><i class="bi bi-share"></i></span>
+                    <span v-else><i class="bi bi-share-fill"></i></span>
+                </button>
+
                 <!-- Sidebar Collapse Button -->
                 <button class="btn btn-outline-info me-3 mb-3" @click="sidebarCollapsed = !sidebarCollapsed"
                     type="button" data-bs-toggle="collapse" data-bs-target="#photoSidebar" aria-expanded="false"
@@ -35,6 +43,12 @@
                     }" />
                 </div>
                 <div class="position-absolute top-0 bottom-0 end-0">
+                    <!-- Share Menu -->
+                    <div id="shareMenu" class="photo-sidebar bg-light border-start border-bottom collapse p-3 z-2">
+                        <p>Share Photo</p>
+                        <Choices multiple />
+                    </div>
+
                     <!-- Sidebar -->
                     <div id="photoSidebar" class="photo-sidebar bg-light border-start border-bottom collapse p-3 z-2">
                         <!-- Creator -->
@@ -142,6 +156,7 @@ import { graphql } from '../gql';
 import { RouteLocationRaw, useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import { PhotoQuery } from '../gql/graphql';
 import Breadcrumbs from '../components/Breadcrumbs.vue';
+import Choices from '../components/Choices.vue';
 
 const $route = useRoute()
 const $router = useRouter()
@@ -156,6 +171,7 @@ const imageOffsetX = ref(0);
 const imageOffsetY = ref(0);
 const panningImage = ref(false);
 const sidebarCollapsed = ref(true);
+const shareCollapsed = ref(true);
 
 
 const props = defineProps<{

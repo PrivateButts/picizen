@@ -86,7 +86,7 @@ export type Photo = {
   cameraMake?: Maybe<Scalars['String']>;
   cameraModel?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
-  creator?: Maybe<User>;
+  creator: User;
   dateTaken?: Maybe<Scalars['DateTime']>;
   gpsLat?: Maybe<Scalars['Decimal']>;
   gpsLon?: Maybe<Scalars['Decimal']>;
@@ -193,7 +193,7 @@ export type PhotoQueryVariables = Exact<{
 }>;
 
 
-export type PhotoQuery = { __typename?: 'Query', photo: { __typename?: 'Photo', id: string, title: string, imageUrl: string, dateTaken?: any | null, gpsLat?: any | null, gpsLon?: any | null, cameraMake?: string | null, cameraModel?: string | null, lensMake?: string | null, lensModel?: string | null, image: { __typename?: 'DjangoImageType', width: number, height: number }, creator?: { __typename?: 'User', username: string } | null } };
+export type PhotoQuery = { __typename?: 'Query', photo: { __typename?: 'Photo', id: string, title: string, imageUrl: string, dateTaken?: any | null, gpsLat?: any | null, gpsLon?: any | null, cameraMake?: string | null, cameraModel?: string | null, lensMake?: string | null, lensModel?: string | null, image: { __typename?: 'DjangoImageType', width: number, height: number }, creator: { __typename?: 'User', username: string } } };
 
 export type UpdatePhotoMutationVariables = Exact<{
   id: Scalars['ID'];

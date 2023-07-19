@@ -8,7 +8,7 @@ import router from '../router'
 provideApolloClient(apolloClient)
 
 
-const { mutate: loginMutation } = useMutation(
+const { mutate: loginMutation, error: loginMutationError } = useMutation(
     graphql(`
         mutation login($username: String!, $password: String!) {
             login(username: $username, password: $password) {
@@ -54,23 +54,18 @@ export const useUserStore = defineStore('user', () => {
     
 
     async function login(uname: string, pword: string) {
-        try {
-            if (isAuthenticated.value) {
-                throw new Error('Already logged in')
-            }
-            const result = await loginMutation({ username: uname, password: pword })
-            if(result && result.data?.login){
-                isAuthenticated.value = true
-                username.value = result.data.login.username
-                id.value = result.data.login.id
-                loaded.value = true
-                return true
-            } else {
-                throw new Error('Login failed, please try again')
-            }
-        } catch (e) {
-            console.error(e)
-            return false
+        if (isAuthenticated.value) {
+            throw new Error('Already logged in')
+        }
+        const result = await loginMutation({ username: uname, password: pword })
+        if(result && result.data?.login){
+            isAuthenticated.value = true
+            username.value = result.data.login.username
+            id.value = result.data.login.id
+            loaded.value = true
+            return true
+        } else {
+            throw new Error('Login failed, please try again')
         }
     }
 

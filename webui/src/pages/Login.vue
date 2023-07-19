@@ -2,6 +2,9 @@
     <div class="container mt-1">
         <h1>Welcome Back!</h1>
         <form @submit.prevent="login()">
+            <div class="alert alert-danger" role="alert" v-if="loginError">
+                {{ loginError }}
+            </div>
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" v-model="username">
@@ -25,6 +28,7 @@ const router = useRouter();
 
 const username = ref('');
 const password = ref('');
+const loginError = ref('');
 
 function login() {
     userStore.login(username.value, password.value).then(() => {
@@ -33,8 +37,9 @@ function login() {
                 name: 'Home'
             })
         }
-    }).catch(() => {
-        alert('Login failed');
+    }).catch((e) => {
+        console.warn('Login failed', e);
+        loginError.value = e.message;
     });
 }
 </script>

@@ -1,0 +1,70 @@
+[tool.ruff]
+line-length = 100
+ignore = ["D203"]
+target-version = "py310"
+exclude = ["**/migrations/**"]
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+extend-exclude = '''
+# Used for black normally
+(
+    .*/migrations/*
+)
+'''
+force-exclude = '''
+# Used for precommit
+(
+    .*/migrations/*
+)
+'''
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+DJANGO_SETTINGS_MODULE = "picizen.settings"
+python_files = "tests.py test_*.py *_tests.py"
+addopts = "--cov=. --cov-report=html --cov-report=term-missing"
+
+[tool.coverage.run]
+branch = false
+source = ['.']
+omit = [
+    # omit anything in a .local directory anywhere
+    "*/.local/*",
+    "*/migrations/*",
+    # omit tests
+    "*/tests/*",
+    "*/test_*.py",
+    "*/tests.py",
+    # omit wsgi/asgi files
+    "picizen/asgi.py",
+    "picizen/wsgi.py",
+    "picizen/settings.py",
+    "manage.py",
+    # omit specific files
+]
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_lines = [
+    # Have to re-enable the standard pragma
+    "pragma: no cover",
+
+    # Don't complain about missing debug-only code:
+    "def __repr__",
+    "if self\\.debug",
+
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if __name__ == .__main__.:",
+]
+
+ignore_errors = true
+
+[tool.coverage.html]
+directory = "htmlcov"

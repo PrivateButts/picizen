@@ -1,6 +1,6 @@
 {
   "recommendations": [
     "vue.volar",
-    "omnilib.ufmt"
+    "charliermarsh.ruff"
   ]
 }

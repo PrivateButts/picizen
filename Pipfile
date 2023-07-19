@@ -25,14 +25,16 @@ celery = "*"
 
 [dev-packages]
 debugpy = "*"
+pre-commit = "*"
 black = "*"
+djlint = "*"
+ruff = "*"
+bandit = "*"
 coverage = "*"
 pytest = "*"
 pytest-django = "*"
 pytest-cov = "*"
-ufmt = "*"
 factory-boy = "*"
-flake8 = "*"
 watchdog = "*"
 celery = {extras = ["pytest"], version = "*"}
 pytest-celery = "*"
