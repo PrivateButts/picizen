@@ -20,6 +20,7 @@ const documents = {
     "\n    query getAlbums {\n        albums{\n            id\n            title\n            description\n            photos{\n                id\n                title\n                image{\n                    width\n                    height\n                }\n                blurhash\n                imageUrl\n            }\n            coverPhoto{\n                imageUrl\n            }\n            photoCount\n            createdAt\n        }\n    }\n": types.GetAlbumsDocument,
     "\n    query getDateGroups {\n        photoDateGroups{\n            yearMonth\n            totalPhotos\n            photos{\n                id\n                title\n                image{\n                    width\n                    height\n                }\n                blurhash\n                imageUrl\n            }\n        }\n    }\n": types.GetDateGroupsDocument,
     "\n    query photo($id: ID!) {\n        photo(pk: $id) {\n            id\n            title\n            image {\n                width\n                height\n            }\n            imageUrl\n\n            creator {\n                username\n            }\n            dateTaken\n            gpsLat\n            gpsLon\n            cameraMake\n            cameraModel\n            lensMake\n            lensModel\n        }\n    }\n": types.PhotoDocument,
+    "\n    query albumPhotoDetail($id: ID!){\n        album(pk: $id){\n            title\n        }\n    }\n": types.AlbumPhotoDetailDocument,
     "\n        mutation updatePhoto($id: ID!, $title: String!) {\n            updatePhoto(id: $id, title: $title) {\n                id\n                title\n            }\n        }\n    ": types.UpdatePhotoDocument,
     "\n        mutation login($username: String!, $password: String!) {\n            login(username: $username, password: $password) {\n                id\n                username\n            }\n        }\n    ": types.LoginDocument,
     "\n    mutation logout {\n        logout\n    }\n": types.LogoutDocument,
@@ -54,6 +55,10 @@ export function graphql(source: "\n    query getDateGroups {\n        photoDateG
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    query photo($id: ID!) {\n        photo(pk: $id) {\n            id\n            title\n            image {\n                width\n                height\n            }\n            imageUrl\n\n            creator {\n                username\n            }\n            dateTaken\n            gpsLat\n            gpsLon\n            cameraMake\n            cameraModel\n            lensMake\n            lensModel\n        }\n    }\n"): (typeof documents)["\n    query photo($id: ID!) {\n        photo(pk: $id) {\n            id\n            title\n            image {\n                width\n                height\n            }\n            imageUrl\n\n            creator {\n                username\n            }\n            dateTaken\n            gpsLat\n            gpsLon\n            cameraMake\n            cameraModel\n            lensMake\n            lensModel\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query albumPhotoDetail($id: ID!){\n        album(pk: $id){\n            title\n        }\n    }\n"): (typeof documents)["\n    query albumPhotoDetail($id: ID!){\n        album(pk: $id){\n            title\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

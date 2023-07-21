@@ -1,12 +1,12 @@
 <template>
     <div class="card">
-        <img v-if="props.album.coverPhoto" :src="props.album.coverPhoto.imageUrl" :alt="album.title"
+        <img v-if="album.coverPhoto" :src="album.coverPhoto.imageUrl" :alt="album.title"
             class="card-img-top" />
         <div class="card-body">
             <h5 class="card-title">{{ album.title }}</h5>
-            <div class="d-flex justify-content-between">
-                <p class="card-text">{{ formatDate(album.createdAt) }}</p>
-                <p class="card-text">{{ album.photoCount }} Photos</p>
+            <div class="row justify-between">
+                <p class="card-text col">{{ formatDate(album.createdAt) }}</p>
+                <p class="card-text col text-end">{{ album.photoCount }} Photos</p>
             </div>
         </div>
     </div>

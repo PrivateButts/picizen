@@ -3,15 +3,9 @@
         <div class="mt-n2 flex-grow-1 d-flex flex-column justify-content-between position-relative">
             <div class="ps-3 pt-3 bg-light w-100 border-bottom border d-flex z-2">
                 <div class="flex-grow-1">
-                    <!-- Show edit on click, otherwise show the breadcrumb -->
-                    <div v-show="editing">
-                        <!-- Title Update Widget -->
-                        <input ref="titleInput" type="text" class="form-control" v-model="photoTitle"
-                            @change="updateTitle" @keyup.enter="updateTitle">
-                    </div>
-                    <div v-if="!editing" @click="editTitle">
+                    <div>
                         <h3>
-                            <Breadcrumbs :crumbs="crumbs"></Breadcrumbs>
+                            <Breadcrumbs :crumbs="crumbs" :can-edit-title="true" :edit-handler="updateTitle"></Breadcrumbs>
                         </h3>
                     </div>
                 </div>
@@ -151,7 +145,7 @@
 
 <script setup lang="ts">
 import { useQuery, useMutation } from '@vue/apollo-composable';
-import { nextTick, ref, watch, computed, onMounted, onUnmounted } from 'vue';
+import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
 import { graphql } from '../gql';
 import { RouteLocationRaw, useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import { PhotoQuery } from '../gql/graphql';
@@ -164,7 +158,6 @@ const $router = useRouter()
 const photoTitle = ref('');
 const photo = ref<PhotoQuery['photo'] | null>(null);
 const editing = ref(false);
-const titleInput = ref<HTMLInputElement>();
 const imageElement = ref<HTMLElement>();
 const imageScale = ref(1);
 const imageOffsetX = ref(0);
@@ -296,17 +289,20 @@ watch(photoQuery, (result) => {
 })
 
 
-function editTitle() {
-    // Start editing the title
-    if (titleInput.value == null) {
-        return;
+const { result: albumQuery } = useQuery(graphql(`
+    query albumPhotoDetail($id: ID!){
+        album(pk: $id){
+            title
+        }
     }
+`), () => ({
+    id: `${$route.params.aid}`
+}))
 
-    editing.value = true
-    nextTick(() => {
-        titleInput.value!.focus()
-    })
-}
+const album = computed(() => {
+    if (albumQuery.value == null) return null;
+    return albumQuery.value.album;
+})
 
 
 // Mutation for updating the photo title
@@ -321,18 +317,19 @@ const { mutate: updateTitleMutation } = useMutation(
     `),
 )
 
-function updateTitle() {
+async function updateTitle(text: string) {
     // Update the photo title using the updateTitleMutation
-    updateTitleMutation({
+    const result = await updateTitleMutation({
         id: $route.params.id as string,
-        title: photoTitle.value
-    }).then((result) => {
-        if (result == null || result.data == null) {
-            return;
-        }
-        photoTitle.value = result.data.updatePhoto.title
-        editing.value = false
+        title: text
     })
+
+    if (result == null || result.data == null) {
+        return null;
+    }
+    photoTitle.value = result.data.updatePhoto.title
+
+    return result.data.updatePhoto.title;
 }
 
 function scaleImage(event: WheelEvent) {
@@ -374,7 +371,7 @@ const crumbs = computed(() => {
     let crumbs = []
     if ($route.name == 'AlbumPhotoDetail') {
         crumbs.push({ name: 'AlbumList', label: 'Albums' })
-        crumbs.push({ name: 'AlbumDetail', params: { id: $route.params.aid }, label: 'Album' })
+        crumbs.push({ name: 'AlbumDetail', params: { id: $route.params.aid }, label: album.value ? album.value.title : "Loading..." })
     } else if ($route.name == 'PhotoDetail') {
         crumbs.push({ name: 'PhotoList', label: 'Photos' })
     }

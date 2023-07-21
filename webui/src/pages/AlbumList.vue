@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <Breadcrumbs :crumbs="crumbs"></Breadcrumbs>
-        <div class="row row-cols-4 g-4">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
             <div v-for="album in albums" class="col">
                 <AlbumCard :album="album" @click="$router.push({
                     name: 'AlbumDetail', params: { id: album.id }
