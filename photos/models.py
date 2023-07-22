@@ -4,12 +4,13 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from accounts.models import ShareableMixin
 from picizen.helpers import BaseModel
 
 USER = get_user_model()
 
 
-class Photo(BaseModel):
+class Photo(ShareableMixin, BaseModel):
     title = models.CharField(max_length=255)
     image = models.ImageField(upload_to="photos")
     blurhash = models.CharField(max_length=255, blank=True, null=True)
@@ -37,7 +38,7 @@ class Photo(BaseModel):
         return self.title
 
 
-class Album(BaseModel):
+class Album(ShareableMixin, BaseModel):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     photos = models.ManyToManyField(Photo)

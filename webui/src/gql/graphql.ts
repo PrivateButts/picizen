@@ -19,13 +19,34 @@ export type Scalars = {
   Upload: any;
 };
 
+export type Access = {
+  __typename?: 'Access';
+  active: Scalars['Boolean'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  level: Scalars['Int'];
+  target?: Maybe<UserGroupTokenPublicRule>;
+  updatedAt: Scalars['DateTime'];
+};
+
+export type AccessLevelDict = {
+  __typename?: 'AccessLevelDict';
+  groups: Array<Access>;
+  persons: Array<Access>;
+  public: Array<Access>;
+  tokens: Array<Access>;
+};
+
 export type Album = {
   __typename?: 'Album';
+  accessDict: AccessLevelDict;
+  accessRules: Array<Access>;
   coverPhoto?: Maybe<Photo>;
   createdAt: Scalars['DateTime'];
   creator: User;
   description: Scalars['String'];
   id: Scalars['ID'];
+  isPublic: Scalars['Boolean'];
   photoCount: Scalars['Int'];
   photos: Array<Photo>;
   title: Scalars['String'];
@@ -40,6 +61,12 @@ export type DjangoImageType = {
   size: Scalars['Int'];
   url: Scalars['String'];
   width: Scalars['Int'];
+};
+
+export type Group = {
+  __typename?: 'Group';
+  id: Scalars['ID'];
+  name: Scalars['String'];
 };
 
 export type Mutation = {
@@ -81,6 +108,8 @@ export type OffsetPaginationInput = {
 
 export type Photo = {
   __typename?: 'Photo';
+  accessDict: AccessLevelDict;
+  accessRules: Array<Access>;
   aspectRatio: Scalars['Float'];
   blurhash?: Maybe<Scalars['String']>;
   cameraMake?: Maybe<Scalars['String']>;
@@ -93,6 +122,7 @@ export type Photo = {
   id: Scalars['ID'];
   image: DjangoImageType;
   imageUrl: Scalars['String'];
+  isPublic: Scalars['Boolean'];
   lensMake?: Maybe<Scalars['String']>;
   lensModel?: Maybe<Scalars['String']>;
   title: Scalars['String'];
@@ -104,6 +134,11 @@ export type PhotoDateGroup = {
   photos: Array<Photo>;
   totalPhotos: Scalars['Int'];
   yearMonth: Scalars['String'];
+};
+
+export type PublicRule = {
+  __typename?: 'PublicRule';
+  public: Scalars['Boolean'];
 };
 
 export type Query = {
@@ -142,11 +177,21 @@ export type Subscription = {
   taskQueueUpdated: Scalars['Int'];
 };
 
+export type Token = {
+  __typename?: 'Token';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  token: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
   username: Scalars['String'];
 };
+
+export type UserGroupTokenPublicRule = Group | PublicRule | Token | User;
 
 export type UserInput = {
   password: Scalars['String'];
@@ -193,7 +238,7 @@ export type PhotoQueryVariables = Exact<{
 }>;
 
 
-export type PhotoQuery = { __typename?: 'Query', photo: { __typename?: 'Photo', id: string, title: string, imageUrl: string, dateTaken?: any | null, gpsLat?: any | null, gpsLon?: any | null, cameraMake?: string | null, cameraModel?: string | null, lensMake?: string | null, lensModel?: string | null, image: { __typename?: 'DjangoImageType', width: number, height: number }, creator: { __typename?: 'User', username: string } } };
+export type PhotoQuery = { __typename?: 'Query', photo: { __typename?: 'Photo', id: string, title: string, imageUrl: string, dateTaken?: any | null, gpsLat?: any | null, gpsLon?: any | null, cameraMake?: string | null, cameraModel?: string | null, lensMake?: string | null, lensModel?: string | null, image: { __typename?: 'DjangoImageType', width: number, height: number }, creator: { __typename?: 'User', username: string }, accessDict: { __typename?: 'AccessLevelDict', persons: Array<{ __typename?: 'Access', target?: { __typename?: 'Group' } | { __typename?: 'PublicRule' } | { __typename?: 'Token' } | { __typename?: 'User', username: string } | null }>, groups: Array<{ __typename?: 'Access', target?: { __typename?: 'Group', name: string } | { __typename?: 'PublicRule' } | { __typename?: 'Token' } | { __typename?: 'User' } | null }>, tokens: Array<{ __typename?: 'Access', target?: { __typename?: 'Group' } | { __typename?: 'PublicRule' } | { __typename?: 'Token', token: string } | { __typename?: 'User' } | null }>, public: Array<{ __typename?: 'Access', target?: { __typename?: 'Group' } | { __typename?: 'PublicRule', public: boolean } | { __typename?: 'Token' } | { __typename?: 'User' } | null }> } } };
 
 export type AlbumPhotoDetailQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -235,7 +280,7 @@ export const UploadPhotoDocument = {"kind":"Document","definitions":[{"kind":"Op
 export const AlbumDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"album"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"album"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"photos"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"Field","name":{"kind":"Name","value":"blurhash"}},{"kind":"Field","name":{"kind":"Name","value":"imageUrl"}}]}}]}}]}}]} as unknown as DocumentNode<AlbumQuery, AlbumQueryVariables>;
 export const GetAlbumsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAlbums"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"albums"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"photos"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"Field","name":{"kind":"Name","value":"blurhash"}},{"kind":"Field","name":{"kind":"Name","value":"imageUrl"}}]}},{"kind":"Field","name":{"kind":"Name","value":"coverPhoto"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"imageUrl"}}]}},{"kind":"Field","name":{"kind":"Name","value":"photoCount"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]} as unknown as DocumentNode<GetAlbumsQuery, GetAlbumsQueryVariables>;
 export const GetDateGroupsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getDateGroups"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"photoDateGroups"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"yearMonth"}},{"kind":"Field","name":{"kind":"Name","value":"totalPhotos"}},{"kind":"Field","name":{"kind":"Name","value":"photos"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"Field","name":{"kind":"Name","value":"blurhash"}},{"kind":"Field","name":{"kind":"Name","value":"imageUrl"}}]}}]}}]}}]} as unknown as DocumentNode<GetDateGroupsQuery, GetDateGroupsQueryVariables>;
-export const PhotoDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"photo"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"photo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"Field","name":{"kind":"Name","value":"imageUrl"}},{"kind":"Field","name":{"kind":"Name","value":"creator"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"username"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dateTaken"}},{"kind":"Field","name":{"kind":"Name","value":"gpsLat"}},{"kind":"Field","name":{"kind":"Name","value":"gpsLon"}},{"kind":"Field","name":{"kind":"Name","value":"cameraMake"}},{"kind":"Field","name":{"kind":"Name","value":"cameraModel"}},{"kind":"Field","name":{"kind":"Name","value":"lensMake"}},{"kind":"Field","name":{"kind":"Name","value":"lensModel"}}]}}]}}]} as unknown as DocumentNode<PhotoQuery, PhotoQueryVariables>;
+export const PhotoDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"photo"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"photo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"Field","name":{"kind":"Name","value":"imageUrl"}},{"kind":"Field","name":{"kind":"Name","value":"creator"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"username"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dateTaken"}},{"kind":"Field","name":{"kind":"Name","value":"gpsLat"}},{"kind":"Field","name":{"kind":"Name","value":"gpsLon"}},{"kind":"Field","name":{"kind":"Name","value":"cameraMake"}},{"kind":"Field","name":{"kind":"Name","value":"cameraModel"}},{"kind":"Field","name":{"kind":"Name","value":"lensMake"}},{"kind":"Field","name":{"kind":"Name","value":"lensModel"}},{"kind":"Field","name":{"kind":"Name","value":"accessDict"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"persons"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"target"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"groups"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"target"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Group"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"tokens"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"target"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Token"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"public"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"target"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PublicRule"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"public"}}]}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<PhotoQuery, PhotoQueryVariables>;
 export const AlbumPhotoDetailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"albumPhotoDetail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"album"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}}]}}]}}]} as unknown as DocumentNode<AlbumPhotoDetailQuery, AlbumPhotoDetailQueryVariables>;
 export const UpdatePhotoDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updatePhoto"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"title"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updatePhoto"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"title"},"value":{"kind":"Variable","name":{"kind":"Name","value":"title"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}}]}}]} as unknown as DocumentNode<UpdatePhotoMutation, UpdatePhotoMutationVariables>;
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"username"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"username"},"value":{"kind":"Variable","name":{"kind":"Name","value":"username"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;

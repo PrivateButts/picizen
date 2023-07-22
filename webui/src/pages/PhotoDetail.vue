@@ -40,7 +40,7 @@
                     <!-- Share Menu -->
                     <div id="shareMenu" class="photo-sidebar bg-light border-start border-bottom collapse p-3 z-2">
                         <p>Share Photo</p>
-                        <Choices multiple />
+                        <ShareMenu :object="photo"></ShareMenu>
                     </div>
 
                     <!-- Sidebar -->
@@ -150,7 +150,7 @@ import { graphql } from '../gql';
 import { RouteLocationRaw, useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import { PhotoQuery } from '../gql/graphql';
 import Breadcrumbs from '../components/Breadcrumbs.vue';
-import Choices from '../components/Choices.vue';
+import ShareMenu from '../components/ShareMenu.vue';
 
 const $route = useRoute()
 const $router = useRouter()
@@ -273,6 +273,28 @@ const { result: photoQuery } = useQuery(graphql(`
             cameraModel
             lensMake
             lensModel
+            accessDict {
+                persons {
+                    target {
+                    ... on User{ username }
+                    }
+                }
+                groups {
+                    target {
+                                ... on Group{ name }
+                    }
+                }
+                tokens {
+                    target {
+                                ... on Token{ token }
+                    }
+                }
+                public {
+                    target {
+                                ... on PublicRule{ public }
+                    }
+                }
+            }
         }
     }
 `), () => ({

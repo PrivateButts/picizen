@@ -36,3 +36,6 @@ docker *COMMAND:
 
 docker-dev *COMMAND:
     docker compose -f docker-compose-dev.yaml {{COMMAND}}
+
+docker-dev-manage *COMMAND:
+    just docker-dev run web python manage.py {{COMMAND}}

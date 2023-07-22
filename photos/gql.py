@@ -2,7 +2,8 @@
 from typing import List, Optional
 
 import strawberry
-from accounts.gql import User as UserType
+import strawberry.django
+from accounts.gql import ShareableTypeMixin, User as UserType
 
 from picizen.helpers import IsAuthenticated
 from strawberry import auto, ID
@@ -12,7 +13,7 @@ from . import models
 
 
 @strawberry.django.type(models.Photo)
-class Photo:
+class Photo(ShareableTypeMixin):
     id: ID
     title: auto
     image: auto
@@ -59,7 +60,7 @@ def get_photo_date_groups() -> List[PhotoDateGroup]:
 
 
 @strawberry.django.type(models.Album)
-class Album:
+class Album(ShareableTypeMixin):
     id: ID
     title: auto
     description: auto

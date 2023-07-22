@@ -14,7 +14,6 @@ redis = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 django-sendfile2 = "*"
-django-guardian = "*"
 exifread = "*"
 requests = "*"
 strawberry-graphql = {extras = ["asgi"], version = "*"}

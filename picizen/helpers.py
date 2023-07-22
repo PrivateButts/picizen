@@ -8,6 +8,8 @@ from django.test import LiveServerTestCase, override_settings
 
 from strawberry.permission import BasePermission
 from strawberry.types import Info
+import strawberry
+import strawberry.django
 
 
 class BaseModel(models.Model):
@@ -16,6 +18,12 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+@strawberry.django.type(BaseModel)
+class BaseModelTypeMixin:
+    created_at: strawberry.auto
+    updated_at: strawberry.auto
 
 
 class IsAuthenticated(BasePermission):

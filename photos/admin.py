@@ -3,7 +3,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.http import urlencode
-from guardian.admin import GuardedModelAdmin
 
 from .models import Album, Photo, Tag
 from .tasks import process_photo
@@ -18,7 +17,7 @@ def assign_permission(self, request, queryset):
 
 
 @admin.register(Photo)
-class PhotoAdmin(GuardedModelAdmin):
+class PhotoAdmin(admin.ModelAdmin):
     model = Photo
     list_display = ("title", "creator", "created_at", "updated_at", "date_taken")
     actions = ["reprocess", assign_permission]

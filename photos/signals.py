@@ -1,6 +1,5 @@
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
-from guardian.shortcuts import assign_perm
 
 from .tasks import process_photo
 
@@ -16,5 +15,6 @@ def photo_post_save(sender, instance, created, **kwargs) -> None:
     """Assign the view permission to the creator of the photo."""
     if created:
         if instance.creator:
-            assign_perm("photos.view_photo", instance.creator, instance)
+            pass
+            # assign_perm("photos.view_photo", instance.creator, instance)
         process_photo.delay(instance.pk)

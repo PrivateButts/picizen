@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_vite",
-    "guardian",
     "django_sendfile",
     "channels",
     "core",
@@ -158,11 +157,7 @@ DJANGO_VITE_DEV_MODE = DEBUG
 STATICFILES_DIRS.append(DJANGO_VITE_ASSETS_PATH)
 
 
-# Django guardian settings
-AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-    "guardian.backends.ObjectPermissionBackend",
-)
+AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
 
 
 # Django sendfile settings

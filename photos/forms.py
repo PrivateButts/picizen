@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_list_or_404, get_object_or_404
-from guardian.shortcuts import assign_perm
 
 
 class AssignPermForm(forms.Form):
@@ -23,6 +22,7 @@ class AssignPermForm(forms.Form):
         ct = get_object_or_404(ContentType, pk=self.cleaned_data["content_type"])
         items = get_list_or_404(ct.model_class(), pk__in=self.cleaned_data["items"].split(","))
         for user in users:
-            assign_perm(self.cleaned_data["permission"], user, items)
+            pass
+            # assign_perm(self.cleaned_data["permission"], user, items)
 
         return True

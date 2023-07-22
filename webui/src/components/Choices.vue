@@ -1,5 +1,10 @@
 <template>
-    <select :id="id" :multiple="multiple"></select>
+    <div v-if="addNew">
+        <input type="text" :id="id" />
+    </div>
+    <div v-else>
+        <select :id="id" :multiple="multiple"></select>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -9,6 +14,7 @@ import { onMounted, onUnmounted, computed, ref, nextTick } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 
 const props = defineProps<{
+    addNew?: boolean;
     multiple?: boolean;
 }>();
 
