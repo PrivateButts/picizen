@@ -281,17 +281,17 @@ const { result: photoQuery } = useQuery(graphql(`
                 }
                 groups {
                     target {
-                                ... on Group{ name }
+                    ... on Group{ name }
                     }
                 }
                 tokens {
                     target {
-                                ... on Token{ token }
+                    ... on Token{ token }
                     }
                 }
                 public {
                     target {
-                                ... on PublicRule{ public }
+                    ... on PublicRule{ public }
                     }
                 }
             }

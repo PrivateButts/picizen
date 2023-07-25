@@ -80,9 +80,15 @@ class ShareableTypeMixin:
         return AccessLevelDict(**d)
 
 
+def get_share_autocomplete(input: str) -> list[User]:
+    return USER.objects.filter(username__icontains=input)
+
+
 @strawberry.type
 class Query:
     me: Optional[User] = auth.current_user()
+
+    shareAutocomplete: list[User] = strawberry.django.field(resolver=get_share_autocomplete)
 
 
 @strawberry.type
