@@ -16,6 +16,13 @@ class ACCESS_LEVELS(models.IntegerChoices):
     OWNER = 3
 
 
+class AccessByType:
+    persons: list["AccessRule"]
+    groups: list["AccessRule"]
+    tokens: list["AccessRule"]
+    public: list["AccessRule"]
+
+
 class AccessRule(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True)
@@ -50,17 +57,42 @@ class ShareableMixin(models.Model):
         return self.access_rules.filter(active=True, public=True).exists()
 
     @property
-    def access_dict(self) -> dict:
-        persons = self.access_rules.filter(active=True, user__isnull=False)
-        groups = self.access_rules.filter(active=True, group__isnull=False)
-        tokens = self.access_rules.filter(active=True, token__isnull=False)
-        public = self.access_rules.filter(active=True, public=True)
-        return {
-            "persons": persons,
-            "groups": groups,
-            "tokens": tokens,
-            "public": public,
-        }
+    def access_by_type(self) -> AccessByType:
+        rules = AccessByType()
+        rules.persons = self.access_rules.filter(active=True, user__isnull=False)
+        rules.groups = self.access_rules.filter(active=True, group__isnull=False)
+        rules.tokens = self.access_rules.filter(active=True, token__isnull=False)
+        rules.public = self.access_rules.filter(active=True, public=True)
+        return rules
+
+    def share(
+        self,
+        level: ACCESS_LEVELS,
+        persons: list[int] = [],
+        groups: list[int] = [],
+        tokens: list[int] = [],
+        public: bool | None = None,
+    ) -> AccessByType:
+        created = AccessByType()
+        if persons:
+            created.persons = []
+            for person in persons:
+                created.persons.append(self.access_rules.create(user_id=person, level=level))
+
+        if groups:
+            created.groups = []
+            for group in groups:
+                created.groups.append(self.access_rules.create(group_id=group, level=level))
+
+        if tokens:
+            created.tokens = []
+            for token in tokens:
+                created.tokens.append(self.access_rules.create(token_id=token, level=level))
+
+        if public:
+            created.public = [self.access_rules.create(public=True, level=level)]
+
+        return created
 
     def user_has_access(self, user: User) -> bool:
         if self.access_rules.filter(active=True, public=True).exists():

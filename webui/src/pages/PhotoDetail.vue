@@ -273,7 +273,7 @@ const { result: photoQuery } = useQuery(graphql(`
             cameraModel
             lensMake
             lensModel
-            accessDict {
+            accessByType {
                 persons {
                     target {
                     ... on User{ username }
