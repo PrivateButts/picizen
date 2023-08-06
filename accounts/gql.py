@@ -93,10 +93,21 @@ def get_share_autocomplete(input: str) -> list[User]:
     return USER.objects.filter(username__icontains=input)
 
 
+def get_share_rules(object_type: ShareableObjects, object_id: strawberry.ID) -> list[Access]:
+    rules = AccessRule.objects.all()
+    match (object_type):
+        case ShareableObjects.PHOTO:
+            rules = rules.filter(photo=object_id)
+        case ShareableObjects.ALBUM:
+            rules = rules.filter(album=object_id)
+    return rules
+
+
 @strawberry.type
 class Query:
     me: Optional[User] = auth.current_user()
 
+    share_rules: list[Access] = strawberry.django.field(resolver=get_share_rules)
     shareAutocomplete: list[User] = strawberry.django.field(resolver=get_share_autocomplete)
 
 
@@ -127,3 +138,15 @@ class Mutation:
         )
         obj.refresh_from_db()
         return obj.access_by_type
+
+    @strawberry.mutation(permission_classes=[IsAuthenticated])
+    def revoke_rule(
+        self,
+        info,
+        id: strawberry.ID,
+    ) -> bool:
+        try:
+            AccessRule.objects.get(id=id).delete()
+            return True
+        except AccessRule.DoesNotExist:
+            return False

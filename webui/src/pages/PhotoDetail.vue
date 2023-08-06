@@ -40,7 +40,7 @@
                     <!-- Share Menu -->
                     <div id="shareMenu" class="photo-sidebar bg-light border-start border-bottom collapse p-3 z-2">
                         <p>Share Photo</p>
-                        <ShareMenu :object="photo"></ShareMenu>
+                        <ShareMenu :object_type="ShareableObjects.Photo" :object_id="photo.id"></ShareMenu>
                     </div>
 
                     <!-- Sidebar -->
@@ -148,7 +148,7 @@ import { useQuery, useMutation } from '@vue/apollo-composable';
 import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
 import { graphql } from '../gql';
 import { RouteLocationRaw, useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
-import { PhotoQuery } from '../gql/graphql';
+import { PhotoQuery, ShareableObjects } from '../gql/graphql';
 import Breadcrumbs from '../components/Breadcrumbs.vue';
 import ShareMenu from '../components/ShareMenu.vue';
 
@@ -273,28 +273,6 @@ const { result: photoQuery } = useQuery(graphql(`
             cameraModel
             lensMake
             lensModel
-            accessByType {
-                persons {
-                    target {
-                    ... on User{ username }
-                    }
-                }
-                groups {
-                    target {
-                    ... on Group{ name }
-                    }
-                }
-                tokens {
-                    target {
-                    ... on Token{ token }
-                    }
-                }
-                public {
-                    target {
-                    ... on PublicRule{ public }
-                    }
-                }
-            }
         }
     }
 `), () => ({
