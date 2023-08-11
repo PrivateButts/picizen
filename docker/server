@@ -1,29 +1,29 @@
 ARG build_mode='prod'
 
 
-FROM python:3.10-slim AS base-build
+FROM python:3.11-slim AS base-build
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /usr/src/app
 
-# copy pipenv files
-COPY ./Pipfile ./Pipfile
-COPY ./Pipfile.lock ./Pipfile.lock
+# copy pdm lock files
+COPY ./pyproject.toml ./pyproject.toml
+COPY ./pdm.lock ./pdm.lock
 
-# install pipenv
+# install pdm
 RUN pip install --no-cache-dir --upgrade pip
-RUN pip install --no-cache-dir pipenv
+RUN pip install --no-cache-dir pdm
 
 
 FROM base-build AS dev-build
 # Freeze requirements
-RUN pipenv requirements --dev > requirements.txt
+RUN pdm export -f requirements --dev > requirements.txt
 
 FROM base-build AS prod-build
 # Freeze requirements
-RUN pipenv requirements > requirements.txt
+RUN pdm export -f requirements > requirements.txt
 
 
 FROM ${build_mode}-build AS build-venv
@@ -33,7 +33,7 @@ RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 RUN pip install --no-cache-dir -r requirements.txt
 
-FROM python:3.10-slim AS server
+FROM python:3.11-slim AS server
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1

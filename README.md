@@ -1,5 +1,7 @@
 # Picizen
 
+[![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
+
 A work in progress personal photo manager. This project isn't even in alpha yet, so check in again in a couple months.
 
 ## Project Goal
@@ -40,7 +42,7 @@ This project is still in flux, and massive changes to fundamental aspects will h
 
 ### Setting up an environment
 
-Project dependencies are managed by pipenv and I'm using [just](https://github.com/casey/just) as a dev script runner, you can setup a development environment by running `just setup` after cloning.
+Project dependencies are managed by pdm and I'm using [just](https://github.com/casey/just) as a dev script runner, you can setup a development environment by running `just setup` after cloning.
 
 The development docker stack can be spun up using `just docker-dev up`.
 

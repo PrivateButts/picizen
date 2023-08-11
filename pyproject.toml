@@ -1,12 +1,69 @@
+[project]
+name = "Picizen"
+version = "0.0.0"
+description = "A self hosted personal photo storage service."
+authors = [{ name = "Private Butts", email = "randybuttsii@gmail.com" }]
+dependencies = [
+    "django",
+    "pillow",
+    "django-vite",
+    "django-environ",
+    "strawberry-graphql-django",
+    "blurhash-python",
+    "redis",
+    "gunicorn",
+    "psycopg2-binary",
+    "django-sendfile2",
+    "exifread",
+    "requests",
+    "strawberry-graphql[asgi]",
+    "channels-redis",
+    "channels[daphne]",
+    "gevent",
+    "celery",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+license = { text = "AGPL-3.0-or-later" }
+
+[tool.pdm]
+[[tool.pdm.source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "debugpy",
+    "pre-commit",
+    "black",
+    "djlint",
+    "ruff",
+    "bandit",
+    "coverage",
+    "pytest",
+    "pytest-django",
+    "pytest-cov",
+    "factory-boy",
+    "watchdog",
+    "celery[pytest]",
+    "pytest-celery",
+]
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
 [tool.ruff]
 line-length = 100
 ignore = ["D203"]
-target-version = "py310"
+target-version = "py311"
 exclude = ["**/migrations/**"]
 
 [tool.black]
 line-length = 100
-target-version = ['py310']
+target-version = ['py311']
 extend-exclude = '''
 # Used for black normally
 (
